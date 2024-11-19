@@ -22,6 +22,63 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
+-- Name: instructor; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.instructor (
+    id integer NOT NULL,
+    is_employed boolean NOT NULL,
+    person_id integer NOT NULL
+);
+
+
+ALTER TABLE public.instructor OWNER TO postgres;
+
+--
+-- Name: instructor_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.instructor_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.instructor_id_seq OWNER TO postgres;
+
+--
+-- Name: instructor_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.instructor_id_seq OWNED BY public.instructor.id;
+
+
+--
+-- Name: instructor_person_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.instructor_person_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.instructor_person_id_seq OWNER TO postgres;
+
+--
+-- Name: instructor_person_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.instructor_person_id_seq OWNED BY public.instructor.person_id;
+
+
+--
 -- Name: person; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -120,6 +177,20 @@ ALTER SEQUENCE public.student_person_id_seq OWNED BY public.student.person_id;
 
 
 --
+-- Name: instructor id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.instructor ALTER COLUMN id SET DEFAULT nextval('public.instructor_id_seq'::regclass);
+
+
+--
+-- Name: instructor person_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.instructor ALTER COLUMN person_id SET DEFAULT nextval('public.instructor_person_id_seq'::regclass);
+
+
+--
 -- Name: person id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -138,6 +209,14 @@ ALTER TABLE ONLY public.student ALTER COLUMN id SET DEFAULT nextval('public.stud
 --
 
 ALTER TABLE ONLY public.student ALTER COLUMN person_id SET DEFAULT nextval('public.student_person_id_seq'::regclass);
+
+
+--
+-- Name: instructor UNIQUE instructor; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.instructor
+    ADD CONSTRAINT "UNIQUE instructor" PRIMARY KEY (id);
 
 
 --
@@ -186,6 +265,14 @@ ALTER TABLE ONLY public.person
 
 ALTER TABLE ONLY public.student
     ADD CONSTRAINT student_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: instructor instructor_person_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.instructor
+    ADD CONSTRAINT instructor_person_id_fkey FOREIGN KEY (person_id) REFERENCES public.person(id);
 
 
 --
