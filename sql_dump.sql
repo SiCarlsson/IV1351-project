@@ -118,6 +118,14 @@ ALTER TABLE ONLY public.person
 
 
 --
+-- Name: instructor id; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.instructor
+    ADD CONSTRAINT id UNIQUE (id);
+
+
+--
 -- Name: instructor instructor_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
