@@ -93,6 +93,62 @@ CREATE TABLE public.contact_person (
 ALTER TABLE public.contact_person OWNER TO postgres;
 
 --
+-- Name: contact_person_email; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.contact_person_email (
+    contact_person_id integer NOT NULL,
+    email_id integer NOT NULL
+);
+
+
+ALTER TABLE public.contact_person_email OWNER TO postgres;
+
+--
+-- Name: contact_person_email_contact_person_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.contact_person_email_contact_person_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.contact_person_email_contact_person_id_seq OWNER TO postgres;
+
+--
+-- Name: contact_person_email_contact_person_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.contact_person_email_contact_person_id_seq OWNED BY public.contact_person_email.contact_person_id;
+
+
+--
+-- Name: contact_person_email_email_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.contact_person_email_email_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.contact_person_email_email_id_seq OWNER TO postgres;
+
+--
+-- Name: contact_person_email_email_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.contact_person_email_email_id_seq OWNED BY public.contact_person_email.email_id;
+
+
+--
 -- Name: contact_person_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -115,6 +171,62 @@ ALTER SEQUENCE public.contact_person_id_seq OWNED BY public.contact_person.id;
 
 
 --
+-- Name: contact_person_phone; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.contact_person_phone (
+    contact_person_id integer NOT NULL,
+    phone_id integer NOT NULL
+);
+
+
+ALTER TABLE public.contact_person_phone OWNER TO postgres;
+
+--
+-- Name: contact_person_phone_contact_person_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.contact_person_phone_contact_person_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.contact_person_phone_contact_person_id_seq OWNER TO postgres;
+
+--
+-- Name: contact_person_phone_contact_person_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.contact_person_phone_contact_person_id_seq OWNED BY public.contact_person_phone.contact_person_id;
+
+
+--
+-- Name: contact_person_phone_phone_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.contact_person_phone_phone_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.contact_person_phone_phone_id_seq OWNER TO postgres;
+
+--
+-- Name: contact_person_phone_phone_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.contact_person_phone_phone_id_seq OWNED BY public.contact_person_phone.phone_id;
+
+
+--
 -- Name: contact_person_student_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -134,6 +246,40 @@ ALTER SEQUENCE public.contact_person_student_id_seq OWNER TO postgres;
 --
 
 ALTER SEQUENCE public.contact_person_student_id_seq OWNED BY public.contact_person.student_id;
+
+
+--
+-- Name: email; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.email (
+    id integer NOT NULL,
+    email character varying(100) NOT NULL
+);
+
+
+ALTER TABLE public.email OWNER TO postgres;
+
+--
+-- Name: email_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.email_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.email_id_seq OWNER TO postgres;
+
+--
+-- Name: email_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.email_id_seq OWNED BY public.email.id;
 
 
 --
@@ -403,6 +549,62 @@ ALTER SEQUENCE public.instructor_id_seq OWNED BY public.instructor.id;
 
 
 --
+-- Name: instructor_known_instruments; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.instructor_known_instruments (
+    instructor_id integer NOT NULL,
+    known_instruments_id integer NOT NULL
+);
+
+
+ALTER TABLE public.instructor_known_instruments OWNER TO postgres;
+
+--
+-- Name: instructor_known_instruments_instructor_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.instructor_known_instruments_instructor_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.instructor_known_instruments_instructor_id_seq OWNER TO postgres;
+
+--
+-- Name: instructor_known_instruments_instructor_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.instructor_known_instruments_instructor_id_seq OWNED BY public.instructor_known_instruments.instructor_id;
+
+
+--
+-- Name: instructor_known_instruments_known_instruments_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.instructor_known_instruments_known_instruments_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.instructor_known_instruments_known_instruments_id_seq OWNER TO postgres;
+
+--
+-- Name: instructor_known_instruments_known_instruments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.instructor_known_instruments_known_instruments_id_seq OWNED BY public.instructor_known_instruments.known_instruments_id;
+
+
+--
 -- Name: instructor_person_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -422,6 +624,62 @@ ALTER SEQUENCE public.instructor_person_id_seq OWNER TO postgres;
 --
 
 ALTER SEQUENCE public.instructor_person_id_seq OWNED BY public.instructor.person_id;
+
+
+--
+-- Name: instructor_type_of_lesson_availability; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.instructor_type_of_lesson_availability (
+    instructor_id integer NOT NULL,
+    type_of_lesson_availability_id integer NOT NULL
+);
+
+
+ALTER TABLE public.instructor_type_of_lesson_availability OWNER TO postgres;
+
+--
+-- Name: instructor_type_of_lesson_ava_type_of_lesson_availability_i_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.instructor_type_of_lesson_ava_type_of_lesson_availability_i_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.instructor_type_of_lesson_ava_type_of_lesson_availability_i_seq OWNER TO postgres;
+
+--
+-- Name: instructor_type_of_lesson_ava_type_of_lesson_availability_i_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.instructor_type_of_lesson_ava_type_of_lesson_availability_i_seq OWNED BY public.instructor_type_of_lesson_availability.type_of_lesson_availability_id;
+
+
+--
+-- Name: instructor_type_of_lesson_availability_instructor_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.instructor_type_of_lesson_availability_instructor_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.instructor_type_of_lesson_availability_instructor_id_seq OWNER TO postgres;
+
+--
+-- Name: instructor_type_of_lesson_availability_instructor_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.instructor_type_of_lesson_availability_instructor_id_seq OWNED BY public.instructor_type_of_lesson_availability.instructor_id;
 
 
 --
@@ -711,6 +969,40 @@ ALTER SEQUENCE public.invoice_student_id_seq OWNED BY public.invoice.student_id;
 
 
 --
+-- Name: known_instruments; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.known_instruments (
+    id integer NOT NULL,
+    known_instruments character varying(500) NOT NULL
+);
+
+
+ALTER TABLE public.known_instruments OWNER TO postgres;
+
+--
+-- Name: known_instruments_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.known_instruments_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.known_instruments_id_seq OWNER TO postgres;
+
+--
+-- Name: known_instruments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.known_instruments_id_seq OWNED BY public.known_instruments.id;
+
+
+--
 -- Name: lesson; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -847,6 +1139,62 @@ CREATE TABLE public.person (
 ALTER TABLE public.person OWNER TO postgres;
 
 --
+-- Name: person_email; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.person_email (
+    person_id integer NOT NULL,
+    email_id integer NOT NULL
+);
+
+
+ALTER TABLE public.person_email OWNER TO postgres;
+
+--
+-- Name: person_email_email_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.person_email_email_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.person_email_email_id_seq OWNER TO postgres;
+
+--
+-- Name: person_email_email_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.person_email_email_id_seq OWNED BY public.person_email.email_id;
+
+
+--
+-- Name: person_email_person_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.person_email_person_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.person_email_person_id_seq OWNER TO postgres;
+
+--
+-- Name: person_email_person_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.person_email_person_id_seq OWNED BY public.person_email.person_id;
+
+
+--
 -- Name: person_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -866,6 +1214,210 @@ ALTER SEQUENCE public.person_id_seq OWNER TO postgres;
 --
 
 ALTER SEQUENCE public.person_id_seq OWNED BY public.person.id;
+
+
+--
+-- Name: person_phone; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.person_phone (
+    person_id integer NOT NULL,
+    phone_id integer NOT NULL
+);
+
+
+ALTER TABLE public.person_phone OWNER TO postgres;
+
+--
+-- Name: person_phone_person_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.person_phone_person_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.person_phone_person_id_seq OWNER TO postgres;
+
+--
+-- Name: person_phone_person_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.person_phone_person_id_seq OWNED BY public.person_phone.person_id;
+
+
+--
+-- Name: person_phone_phone_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.person_phone_phone_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.person_phone_phone_id_seq OWNER TO postgres;
+
+--
+-- Name: person_phone_phone_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.person_phone_phone_id_seq OWNED BY public.person_phone.phone_id;
+
+
+--
+-- Name: phone; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.phone (
+    id integer NOT NULL,
+    phone_nr character varying(100) NOT NULL
+);
+
+
+ALTER TABLE public.phone OWNER TO postgres;
+
+--
+-- Name: phone_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.phone_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.phone_id_seq OWNER TO postgres;
+
+--
+-- Name: phone_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.phone_id_seq OWNED BY public.phone.id;
+
+
+--
+-- Name: sibling; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.sibling (
+    id integer NOT NULL,
+    sibling_student_id integer NOT NULL,
+    student_id integer NOT NULL
+);
+
+
+ALTER TABLE public.sibling OWNER TO postgres;
+
+--
+-- Name: sibling_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.sibling_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.sibling_id_seq OWNER TO postgres;
+
+--
+-- Name: sibling_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.sibling_id_seq OWNED BY public.sibling.id;
+
+
+--
+-- Name: sibling_sibling_student_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.sibling_sibling_student_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.sibling_sibling_student_id_seq OWNER TO postgres;
+
+--
+-- Name: sibling_sibling_student_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.sibling_sibling_student_id_seq OWNED BY public.sibling.sibling_student_id;
+
+
+--
+-- Name: sibling_student_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.sibling_student_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.sibling_student_id_seq OWNER TO postgres;
+
+--
+-- Name: sibling_student_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.sibling_student_id_seq OWNED BY public.sibling.student_id;
+
+
+--
+-- Name: skill_level; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.skill_level (
+    id integer NOT NULL,
+    skill_level character varying(100) NOT NULL,
+    instrument character varying(100) NOT NULL
+);
+
+
+ALTER TABLE public.skill_level OWNER TO postgres;
+
+--
+-- Name: skill_level_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.skill_level_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.skill_level_id_seq OWNER TO postgres;
+
+--
+-- Name: skill_level_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.skill_level_id_seq OWNED BY public.skill_level.id;
 
 
 --
@@ -906,6 +1458,62 @@ ALTER SEQUENCE public.student_id_seq OWNED BY public.student.id;
 
 
 --
+-- Name: student_known_instrument; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.student_known_instrument (
+    student_id integer NOT NULL,
+    known_instruments_id integer NOT NULL
+);
+
+
+ALTER TABLE public.student_known_instrument OWNER TO postgres;
+
+--
+-- Name: student_known_instrument_known_instruments_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.student_known_instrument_known_instruments_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.student_known_instrument_known_instruments_id_seq OWNER TO postgres;
+
+--
+-- Name: student_known_instrument_known_instruments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.student_known_instrument_known_instruments_id_seq OWNED BY public.student_known_instrument.known_instruments_id;
+
+
+--
+-- Name: student_known_instrument_student_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.student_known_instrument_student_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.student_known_instrument_student_id_seq OWNER TO postgres;
+
+--
+-- Name: student_known_instrument_student_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.student_known_instrument_student_id_seq OWNED BY public.student_known_instrument.student_id;
+
+
+--
 -- Name: student_person_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -925,6 +1533,152 @@ ALTER SEQUENCE public.student_person_id_seq OWNER TO postgres;
 --
 
 ALTER SEQUENCE public.student_person_id_seq OWNED BY public.student.person_id;
+
+
+--
+-- Name: student_sibling; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.student_sibling (
+    student_id integer NOT NULL,
+    sibling_id integer NOT NULL
+);
+
+
+ALTER TABLE public.student_sibling OWNER TO postgres;
+
+--
+-- Name: student_sibling_sibling_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.student_sibling_sibling_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.student_sibling_sibling_id_seq OWNER TO postgres;
+
+--
+-- Name: student_sibling_sibling_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.student_sibling_sibling_id_seq OWNED BY public.student_sibling.sibling_id;
+
+
+--
+-- Name: student_sibling_student_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.student_sibling_student_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.student_sibling_student_id_seq OWNER TO postgres;
+
+--
+-- Name: student_sibling_student_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.student_sibling_student_id_seq OWNED BY public.student_sibling.student_id;
+
+
+--
+-- Name: student_skill_level; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.student_skill_level (
+    student_id integer NOT NULL,
+    skill_level_id integer NOT NULL
+);
+
+
+ALTER TABLE public.student_skill_level OWNER TO postgres;
+
+--
+-- Name: student_skill_level_skill_level_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.student_skill_level_skill_level_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.student_skill_level_skill_level_id_seq OWNER TO postgres;
+
+--
+-- Name: student_skill_level_skill_level_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.student_skill_level_skill_level_id_seq OWNED BY public.student_skill_level.skill_level_id;
+
+
+--
+-- Name: student_skill_level_student_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.student_skill_level_student_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.student_skill_level_student_id_seq OWNER TO postgres;
+
+--
+-- Name: student_skill_level_student_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.student_skill_level_student_id_seq OWNED BY public.student_skill_level.student_id;
+
+
+--
+-- Name: type_of_lesson_availability; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.type_of_lesson_availability (
+    id integer NOT NULL,
+    type_of_lesson character varying(100) NOT NULL
+);
+
+
+ALTER TABLE public.type_of_lesson_availability OWNER TO postgres;
+
+--
+-- Name: type_of_lesson_availability_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.type_of_lesson_availability_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.type_of_lesson_availability_id_seq OWNER TO postgres;
+
+--
+-- Name: type_of_lesson_availability_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.type_of_lesson_availability_id_seq OWNED BY public.type_of_lesson_availability.id;
 
 
 --
@@ -953,6 +1707,41 @@ ALTER TABLE ONLY public.contact_person ALTER COLUMN id SET DEFAULT nextval('publ
 --
 
 ALTER TABLE ONLY public.contact_person ALTER COLUMN student_id SET DEFAULT nextval('public.contact_person_student_id_seq'::regclass);
+
+
+--
+-- Name: contact_person_email contact_person_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.contact_person_email ALTER COLUMN contact_person_id SET DEFAULT nextval('public.contact_person_email_contact_person_id_seq'::regclass);
+
+
+--
+-- Name: contact_person_email email_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.contact_person_email ALTER COLUMN email_id SET DEFAULT nextval('public.contact_person_email_email_id_seq'::regclass);
+
+
+--
+-- Name: contact_person_phone contact_person_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.contact_person_phone ALTER COLUMN contact_person_id SET DEFAULT nextval('public.contact_person_phone_contact_person_id_seq'::regclass);
+
+
+--
+-- Name: contact_person_phone phone_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.contact_person_phone ALTER COLUMN phone_id SET DEFAULT nextval('public.contact_person_phone_phone_id_seq'::regclass);
+
+
+--
+-- Name: email id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.email ALTER COLUMN id SET DEFAULT nextval('public.email_id_seq'::regclass);
 
 
 --
@@ -1026,6 +1815,34 @@ ALTER TABLE ONLY public.instructor ALTER COLUMN person_id SET DEFAULT nextval('p
 
 
 --
+-- Name: instructor_known_instruments instructor_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.instructor_known_instruments ALTER COLUMN instructor_id SET DEFAULT nextval('public.instructor_known_instruments_instructor_id_seq'::regclass);
+
+
+--
+-- Name: instructor_known_instruments known_instruments_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.instructor_known_instruments ALTER COLUMN known_instruments_id SET DEFAULT nextval('public.instructor_known_instruments_known_instruments_id_seq'::regclass);
+
+
+--
+-- Name: instructor_type_of_lesson_availability instructor_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.instructor_type_of_lesson_availability ALTER COLUMN instructor_id SET DEFAULT nextval('public.instructor_type_of_lesson_availability_instructor_id_seq'::regclass);
+
+
+--
+-- Name: instructor_type_of_lesson_availability type_of_lesson_availability_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.instructor_type_of_lesson_availability ALTER COLUMN type_of_lesson_availability_id SET DEFAULT nextval('public.instructor_type_of_lesson_ava_type_of_lesson_availability_i_seq'::regclass);
+
+
+--
 -- Name: instrumental_lease id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1096,6 +1913,13 @@ ALTER TABLE ONLY public.invoice ALTER COLUMN lesson_price_scheme_id SET DEFAULT 
 
 
 --
+-- Name: known_instruments id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.known_instruments ALTER COLUMN id SET DEFAULT nextval('public.known_instruments_id_seq'::regclass);
+
+
+--
 -- Name: lesson id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1131,6 +1955,69 @@ ALTER TABLE ONLY public.person ALTER COLUMN id SET DEFAULT nextval('public.perso
 
 
 --
+-- Name: person_email person_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.person_email ALTER COLUMN person_id SET DEFAULT nextval('public.person_email_person_id_seq'::regclass);
+
+
+--
+-- Name: person_email email_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.person_email ALTER COLUMN email_id SET DEFAULT nextval('public.person_email_email_id_seq'::regclass);
+
+
+--
+-- Name: person_phone person_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.person_phone ALTER COLUMN person_id SET DEFAULT nextval('public.person_phone_person_id_seq'::regclass);
+
+
+--
+-- Name: person_phone phone_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.person_phone ALTER COLUMN phone_id SET DEFAULT nextval('public.person_phone_phone_id_seq'::regclass);
+
+
+--
+-- Name: phone id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.phone ALTER COLUMN id SET DEFAULT nextval('public.phone_id_seq'::regclass);
+
+
+--
+-- Name: sibling id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.sibling ALTER COLUMN id SET DEFAULT nextval('public.sibling_id_seq'::regclass);
+
+
+--
+-- Name: sibling sibling_student_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.sibling ALTER COLUMN sibling_student_id SET DEFAULT nextval('public.sibling_sibling_student_id_seq'::regclass);
+
+
+--
+-- Name: sibling student_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.sibling ALTER COLUMN student_id SET DEFAULT nextval('public.sibling_student_id_seq'::regclass);
+
+
+--
+-- Name: skill_level id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.skill_level ALTER COLUMN id SET DEFAULT nextval('public.skill_level_id_seq'::regclass);
+
+
+--
 -- Name: student id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1142,6 +2029,55 @@ ALTER TABLE ONLY public.student ALTER COLUMN id SET DEFAULT nextval('public.stud
 --
 
 ALTER TABLE ONLY public.student ALTER COLUMN person_id SET DEFAULT nextval('public.student_person_id_seq'::regclass);
+
+
+--
+-- Name: student_known_instrument student_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.student_known_instrument ALTER COLUMN student_id SET DEFAULT nextval('public.student_known_instrument_student_id_seq'::regclass);
+
+
+--
+-- Name: student_known_instrument known_instruments_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.student_known_instrument ALTER COLUMN known_instruments_id SET DEFAULT nextval('public.student_known_instrument_known_instruments_id_seq'::regclass);
+
+
+--
+-- Name: student_sibling student_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.student_sibling ALTER COLUMN student_id SET DEFAULT nextval('public.student_sibling_student_id_seq'::regclass);
+
+
+--
+-- Name: student_sibling sibling_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.student_sibling ALTER COLUMN sibling_id SET DEFAULT nextval('public.student_sibling_sibling_id_seq'::regclass);
+
+
+--
+-- Name: student_skill_level student_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.student_skill_level ALTER COLUMN student_id SET DEFAULT nextval('public.student_skill_level_student_id_seq'::regclass);
+
+
+--
+-- Name: student_skill_level skill_level_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.student_skill_level ALTER COLUMN skill_level_id SET DEFAULT nextval('public.student_skill_level_skill_level_id_seq'::regclass);
+
+
+--
+-- Name: type_of_lesson_availability id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.type_of_lesson_availability ALTER COLUMN id SET DEFAULT nextval('public.type_of_lesson_availability_id_seq'::regclass);
 
 
 --
@@ -1185,11 +2121,35 @@ ALTER TABLE ONLY public.booking
 
 
 --
+-- Name: contact_person_email contact_person_email_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.contact_person_email
+    ADD CONSTRAINT contact_person_email_pkey PRIMARY KEY (contact_person_id, email_id);
+
+
+--
+-- Name: contact_person_phone contact_person_phone_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.contact_person_phone
+    ADD CONSTRAINT contact_person_phone_pkey PRIMARY KEY (contact_person_id, phone_id);
+
+
+--
 -- Name: contact_person contact_person_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.contact_person
     ADD CONSTRAINT contact_person_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: email email_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.email
+    ADD CONSTRAINT email_pkey PRIMARY KEY (id);
 
 
 --
@@ -1233,6 +2193,22 @@ ALTER TABLE ONLY public.individual_lesson
 
 
 --
+-- Name: instructor_known_instruments instructor_known_instruments_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.instructor_known_instruments
+    ADD CONSTRAINT instructor_known_instruments_pkey PRIMARY KEY (instructor_id, known_instruments_id);
+
+
+--
+-- Name: instructor_type_of_lesson_availability instructor_type_of_lesson_availability_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.instructor_type_of_lesson_availability
+    ADD CONSTRAINT instructor_type_of_lesson_availability_pkey PRIMARY KEY (instructor_id, type_of_lesson_availability_id);
+
+
+--
 -- Name: instrumental_lease instrumental_lease_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1265,6 +2241,14 @@ ALTER TABLE ONLY public.invoice
 
 
 --
+-- Name: known_instruments known_instruments_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.known_instruments
+    ADD CONSTRAINT known_instruments_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: lesson lesson_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1281,11 +2265,27 @@ ALTER TABLE ONLY public.lesson_price_scheme
 
 
 --
+-- Name: person_email person_email_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.person_email
+    ADD CONSTRAINT person_email_pkey PRIMARY KEY (person_id, email_id);
+
+
+--
 -- Name: student person_id; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.student
     ADD CONSTRAINT person_id UNIQUE (person_id);
+
+
+--
+-- Name: person_phone person_phone_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.person_phone
+    ADD CONSTRAINT person_phone_pkey PRIMARY KEY (person_id, phone_id);
 
 
 --
@@ -1297,11 +2297,99 @@ ALTER TABLE ONLY public.person
 
 
 --
+-- Name: phone phone_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.phone
+    ADD CONSTRAINT phone_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: sibling sibling_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.sibling
+    ADD CONSTRAINT sibling_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: skill_level skill_level_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.skill_level
+    ADD CONSTRAINT skill_level_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: student_known_instrument student_known_instrument_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.student_known_instrument
+    ADD CONSTRAINT student_known_instrument_pkey PRIMARY KEY (student_id, known_instruments_id);
+
+
+--
 -- Name: student student_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.student
     ADD CONSTRAINT student_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: student_sibling student_sibling_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.student_sibling
+    ADD CONSTRAINT student_sibling_pkey PRIMARY KEY (student_id, sibling_id);
+
+
+--
+-- Name: student_skill_level student_skill_level_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.student_skill_level
+    ADD CONSTRAINT student_skill_level_pkey PRIMARY KEY (student_id, skill_level_id);
+
+
+--
+-- Name: type_of_lesson_availability type_of_lesson_availability_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.type_of_lesson_availability
+    ADD CONSTRAINT type_of_lesson_availability_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: contact_person_phone contact_person_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.contact_person_phone
+    ADD CONSTRAINT contact_person_id FOREIGN KEY (contact_person_id) REFERENCES public.contact_person(id);
+
+
+--
+-- Name: contact_person_email contact_person_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.contact_person_email
+    ADD CONSTRAINT contact_person_id FOREIGN KEY (contact_person_id) REFERENCES public.contact_person(id);
+
+
+--
+-- Name: contact_person_email email_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.contact_person_email
+    ADD CONSTRAINT email_id FOREIGN KEY (email_id) REFERENCES public.email(id);
+
+
+--
+-- Name: person_email email_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.person_email
+    ADD CONSTRAINT email_id FOREIGN KEY (email_id) REFERENCES public.email(id);
 
 
 --
@@ -1326,6 +2414,30 @@ ALTER TABLE ONLY public.group_lesson
 
 ALTER TABLE ONLY public.lesson
     ADD CONSTRAINT instructor_id FOREIGN KEY (instructor_id) REFERENCES public.instructor(id);
+
+
+--
+-- Name: instructor_type_of_lesson_availability instructor_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.instructor_type_of_lesson_availability
+    ADD CONSTRAINT instructor_id FOREIGN KEY (instructor_id) REFERENCES public.instructor(id);
+
+
+--
+-- Name: instructor_known_instruments instructor_known_instruments_instructor_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.instructor_known_instruments
+    ADD CONSTRAINT instructor_known_instruments_instructor_id_fkey FOREIGN KEY (instructor_id) REFERENCES public.instructor(id);
+
+
+--
+-- Name: instructor_known_instruments instructor_known_instruments_known_instruments_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.instructor_known_instruments
+    ADD CONSTRAINT instructor_known_instruments_known_instruments_id_fkey FOREIGN KEY (known_instruments_id) REFERENCES public.known_instruments(id);
 
 
 --
@@ -1369,6 +2481,14 @@ ALTER TABLE ONLY public.booking
 
 
 --
+-- Name: student_known_instrument known_instruments_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.student_known_instrument
+    ADD CONSTRAINT known_instruments_id FOREIGN KEY (known_instruments_id) REFERENCES public.known_instruments(id);
+
+
+--
 -- Name: individual_lesson lesson_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1390,6 +2510,54 @@ ALTER TABLE ONLY public.group_based_lesson
 
 ALTER TABLE ONLY public.invoice
     ADD CONSTRAINT lesson_price_scheme_id FOREIGN KEY (lesson_price_scheme_id) REFERENCES public.lesson_price_scheme(id);
+
+
+--
+-- Name: person_phone person_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.person_phone
+    ADD CONSTRAINT person_id FOREIGN KEY (person_id) REFERENCES public.person(id);
+
+
+--
+-- Name: person_email person_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.person_email
+    ADD CONSTRAINT person_id FOREIGN KEY (person_id) REFERENCES public.person(id);
+
+
+--
+-- Name: contact_person_phone phone_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.contact_person_phone
+    ADD CONSTRAINT phone_id FOREIGN KEY (phone_id) REFERENCES public.phone(id);
+
+
+--
+-- Name: person_phone phone_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.person_phone
+    ADD CONSTRAINT phone_id FOREIGN KEY (phone_id) REFERENCES public.phone(id);
+
+
+--
+-- Name: student_sibling sibling_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.student_sibling
+    ADD CONSTRAINT sibling_id FOREIGN KEY (sibling_id) REFERENCES public.sibling(id);
+
+
+--
+-- Name: student_skill_level skill_level_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.student_skill_level
+    ADD CONSTRAINT skill_level_id FOREIGN KEY (skill_level_id) REFERENCES public.skill_level(id);
 
 
 --
@@ -1425,11 +2593,51 @@ ALTER TABLE ONLY public.contact_person
 
 
 --
+-- Name: student_known_instrument student_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.student_known_instrument
+    ADD CONSTRAINT student_id FOREIGN KEY (student_id) REFERENCES public.student(id);
+
+
+--
+-- Name: student_skill_level student_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.student_skill_level
+    ADD CONSTRAINT student_id FOREIGN KEY (student_id) REFERENCES public.student(id);
+
+
+--
+-- Name: sibling student_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.sibling
+    ADD CONSTRAINT student_id FOREIGN KEY (student_id) REFERENCES public.student(id);
+
+
+--
+-- Name: student_sibling student_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.student_sibling
+    ADD CONSTRAINT student_id FOREIGN KEY (student_id) REFERENCES public.student(id);
+
+
+--
 -- Name: student student_person_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.student
     ADD CONSTRAINT student_person_id_fkey FOREIGN KEY (person_id) REFERENCES public.person(id);
+
+
+--
+-- Name: instructor_type_of_lesson_availability type_of_lesson_availability_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.instructor_type_of_lesson_availability
+    ADD CONSTRAINT type_of_lesson_availability_id FOREIGN KEY (type_of_lesson_availability_id) REFERENCES public.type_of_lesson_availability(id);
 
 
 --
