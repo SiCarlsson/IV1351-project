@@ -974,7 +974,7 @@ ALTER SEQUENCE public.invoice_student_id_seq OWNED BY public.invoice.student_id;
 
 CREATE TABLE public.known_instruments (
     id integer NOT NULL,
-    known_instruments character varying(500) NOT NULL
+    instrument character varying(100) NOT NULL
 );
 
 
@@ -1629,62 +1629,6 @@ ALTER SEQUENCE public.student_id_seq OWNED BY public.student.id;
 
 
 --
--- Name: student_known_instrument; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.student_known_instrument (
-    student_id integer NOT NULL,
-    known_instruments_id integer NOT NULL
-);
-
-
-ALTER TABLE public.student_known_instrument OWNER TO postgres;
-
---
--- Name: student_known_instrument_known_instruments_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE public.student_known_instrument_known_instruments_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER SEQUENCE public.student_known_instrument_known_instruments_id_seq OWNER TO postgres;
-
---
--- Name: student_known_instrument_known_instruments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE public.student_known_instrument_known_instruments_id_seq OWNED BY public.student_known_instrument.known_instruments_id;
-
-
---
--- Name: student_known_instrument_student_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE public.student_known_instrument_student_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER SEQUENCE public.student_known_instrument_student_id_seq OWNER TO postgres;
-
---
--- Name: student_known_instrument_student_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE public.student_known_instrument_student_id_seq OWNED BY public.student_known_instrument.student_id;
-
-
---
 -- Name: student_person_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -2245,20 +2189,6 @@ ALTER TABLE ONLY public.student ALTER COLUMN person_id SET DEFAULT nextval('publ
 
 
 --
--- Name: student_known_instrument student_id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.student_known_instrument ALTER COLUMN student_id SET DEFAULT nextval('public.student_known_instrument_student_id_seq'::regclass);
-
-
---
--- Name: student_known_instrument known_instruments_id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.student_known_instrument ALTER COLUMN known_instruments_id SET DEFAULT nextval('public.student_known_instrument_known_instruments_id_seq'::regclass);
-
-
---
 -- Name: student_sibling student_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2326,6 +2256,14 @@ ALTER TABLE ONLY public.person
 
 
 --
+-- Name: booking booking_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.booking
+    ADD CONSTRAINT booking_id_key UNIQUE (id);
+
+
+--
 -- Name: booking booking_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2339,6 +2277,14 @@ ALTER TABLE ONLY public.booking
 
 ALTER TABLE ONLY public.contact_person_email
     ADD CONSTRAINT contact_person_email_pkey PRIMARY KEY (contact_person_id, email_id);
+
+
+--
+-- Name: contact_person contact_person_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.contact_person
+    ADD CONSTRAINT contact_person_id_key UNIQUE (id);
 
 
 --
@@ -2358,11 +2304,35 @@ ALTER TABLE ONLY public.contact_person
 
 
 --
+-- Name: email email_email_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.email
+    ADD CONSTRAINT email_email_key UNIQUE (email);
+
+
+--
+-- Name: email email_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.email
+    ADD CONSTRAINT email_id_key UNIQUE (id);
+
+
+--
 -- Name: email email_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.email
     ADD CONSTRAINT email_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: ensemble ensemble_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.ensemble
+    ADD CONSTRAINT ensemble_id_key UNIQUE (id);
 
 
 --
@@ -2374,11 +2344,27 @@ ALTER TABLE ONLY public.ensemble
 
 
 --
+-- Name: group_based_lesson group_based_lesson_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.group_based_lesson
+    ADD CONSTRAINT group_based_lesson_id_key UNIQUE (id);
+
+
+--
 -- Name: group_based_lesson group_based_lesson_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.group_based_lesson
     ADD CONSTRAINT group_based_lesson_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: group_lesson group_lesson_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.group_lesson
+    ADD CONSTRAINT group_lesson_id_key UNIQUE (id);
 
 
 --
@@ -2398,11 +2384,27 @@ ALTER TABLE ONLY public.student
 
 
 --
+-- Name: individual_lesson individual_lesson_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.individual_lesson
+    ADD CONSTRAINT individual_lesson_id_key UNIQUE (id);
+
+
+--
 -- Name: individual_lesson individual_lesson_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.individual_lesson
     ADD CONSTRAINT individual_lesson_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: instructor instructor_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.instructor
+    ADD CONSTRAINT instructor_id_key UNIQUE (id);
 
 
 --
@@ -2422,11 +2424,27 @@ ALTER TABLE ONLY public.instructor_type_of_lesson_availability
 
 
 --
+-- Name: instrumental_lease instrumental_lease_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.instrumental_lease
+    ADD CONSTRAINT instrumental_lease_id_key UNIQUE (id);
+
+
+--
 -- Name: instrumental_lease instrumental_lease_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.instrumental_lease
     ADD CONSTRAINT instrumental_lease_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: instrumental_price_scheme instrumental_price_scheme_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.instrumental_price_scheme
+    ADD CONSTRAINT instrumental_price_scheme_id_key UNIQUE (id);
 
 
 --
@@ -2438,11 +2456,27 @@ ALTER TABLE ONLY public.instrumental_price_scheme
 
 
 --
+-- Name: instrumental_storage instrumental_storage_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.instrumental_storage
+    ADD CONSTRAINT instrumental_storage_id_key UNIQUE (id);
+
+
+--
 -- Name: instrumental_storage instrumental_storage_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.instrumental_storage
     ADD CONSTRAINT instrumental_storage_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: invoice invoice_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.invoice
+    ADD CONSTRAINT invoice_id_key UNIQUE (id);
 
 
 --
@@ -2454,11 +2488,27 @@ ALTER TABLE ONLY public.invoice
 
 
 --
+-- Name: known_instruments known_instruments_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.known_instruments
+    ADD CONSTRAINT known_instruments_id_key UNIQUE (id);
+
+
+--
 -- Name: known_instruments known_instruments_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.known_instruments
     ADD CONSTRAINT known_instruments_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: lesson lesson_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.lesson
+    ADD CONSTRAINT lesson_id_key UNIQUE (id);
 
 
 --
@@ -2470,11 +2520,27 @@ ALTER TABLE ONLY public.lesson
 
 
 --
+-- Name: lesson_price_scheme lesson_price_scheme_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.lesson_price_scheme
+    ADD CONSTRAINT lesson_price_scheme_id_key UNIQUE (id);
+
+
+--
 -- Name: lesson_price_scheme lesson_price_scheme_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.lesson_price_scheme
     ADD CONSTRAINT lesson_price_scheme_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: pay_slip pay_slip_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.pay_slip
+    ADD CONSTRAINT pay_slip_id_key UNIQUE (id);
 
 
 --
@@ -2526,6 +2592,22 @@ ALTER TABLE ONLY public.person
 
 
 --
+-- Name: phone phone_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.phone
+    ADD CONSTRAINT phone_id_key UNIQUE (id);
+
+
+--
+-- Name: phone phone_phone_nr_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.phone
+    ADD CONSTRAINT phone_phone_nr_key UNIQUE (phone_nr);
+
+
+--
 -- Name: phone phone_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2534,11 +2616,27 @@ ALTER TABLE ONLY public.phone
 
 
 --
+-- Name: sibling sibling_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.sibling
+    ADD CONSTRAINT sibling_id_key UNIQUE (id);
+
+
+--
 -- Name: sibling sibling_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.sibling
     ADD CONSTRAINT sibling_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: skill_level skill_level_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.skill_level
+    ADD CONSTRAINT skill_level_id_key UNIQUE (id);
 
 
 --
@@ -2555,14 +2653,6 @@ ALTER TABLE ONLY public.skill_level_of_lesson
 
 ALTER TABLE ONLY public.skill_level
     ADD CONSTRAINT skill_level_pkey PRIMARY KEY (id);
-
-
---
--- Name: student_known_instrument student_known_instrument_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.student_known_instrument
-    ADD CONSTRAINT student_known_instrument_pkey PRIMARY KEY (student_id, known_instruments_id);
 
 
 --
@@ -2587,6 +2677,14 @@ ALTER TABLE ONLY public.student_sibling
 
 ALTER TABLE ONLY public.student_skill_level
     ADD CONSTRAINT student_skill_level_pkey PRIMARY KEY (student_id, skill_level_id);
+
+
+--
+-- Name: type_of_lesson_availability type_of_lesson_availability_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.type_of_lesson_availability
+    ADD CONSTRAINT type_of_lesson_availability_id_key UNIQUE (id);
 
 
 --
@@ -2726,14 +2824,6 @@ ALTER TABLE ONLY public.booking
 
 
 --
--- Name: student_known_instrument known_instruments_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.student_known_instrument
-    ADD CONSTRAINT known_instruments_id FOREIGN KEY (known_instruments_id) REFERENCES public.known_instruments(id);
-
-
---
 -- Name: individual_lesson lesson_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2858,14 +2948,6 @@ ALTER TABLE ONLY public.booking
 --
 
 ALTER TABLE ONLY public.contact_person
-    ADD CONSTRAINT student_id FOREIGN KEY (student_id) REFERENCES public.student(id);
-
-
---
--- Name: student_known_instrument student_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.student_known_instrument
     ADD CONSTRAINT student_id FOREIGN KEY (student_id) REFERENCES public.student(id);
 
 
