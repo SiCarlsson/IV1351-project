@@ -690,7 +690,6 @@ CREATE TABLE public.instrumental_lease (
     start_date date,
     end_date date,
     student_id integer NOT NULL,
-    invoice_id integer NOT NULL,
     instrumental_storage_id integer NOT NULL
 );
 
@@ -742,28 +741,6 @@ ALTER SEQUENCE public.instrumental_lease_instrumental_storage_id_seq OWNED BY pu
 
 
 --
--- Name: instrumental_lease_invoice_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE public.instrumental_lease_invoice_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER SEQUENCE public.instrumental_lease_invoice_id_seq OWNER TO postgres;
-
---
--- Name: instrumental_lease_invoice_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE public.instrumental_lease_invoice_id_seq OWNED BY public.instrumental_lease.invoice_id;
-
-
---
 -- Name: instrumental_lease_student_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -791,7 +768,7 @@ ALTER SEQUENCE public.instrumental_lease_student_id_seq OWNED BY public.instrume
 
 CREATE TABLE public.instrumental_price_scheme (
     id integer NOT NULL,
-    type_of_instruments character varying(100) NOT NULL,
+    type_of_instrument character varying(100) NOT NULL,
     fee_per_month character varying(100) NOT NULL,
     price_from_date date NOT NULL
 );
@@ -828,7 +805,6 @@ ALTER SEQUENCE public.instrumental_price_scheme_id_seq OWNED BY public.instrumen
 CREATE TABLE public.instrumental_storage (
     id integer NOT NULL,
     instrument_brand character varying(100) NOT NULL,
-    instrument_condition character varying(100) NOT NULL,
     quantity character varying(100) NOT NULL
 );
 
@@ -1190,7 +1166,6 @@ ALTER SEQUENCE public.phone_id_seq OWNED BY public.phone.id;
 
 CREATE TABLE public.sibling (
     id integer NOT NULL,
-    sibling_student_id integer NOT NULL,
     student_id integer NOT NULL
 );
 
@@ -1217,50 +1192,6 @@ ALTER SEQUENCE public.sibling_id_seq OWNER TO postgres;
 --
 
 ALTER SEQUENCE public.sibling_id_seq OWNED BY public.sibling.id;
-
-
---
--- Name: sibling_sibling_student_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE public.sibling_sibling_student_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER SEQUENCE public.sibling_sibling_student_id_seq OWNER TO postgres;
-
---
--- Name: sibling_sibling_student_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE public.sibling_sibling_student_id_seq OWNED BY public.sibling.sibling_student_id;
-
-
---
--- Name: sibling_student_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE public.sibling_student_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER SEQUENCE public.sibling_student_id_seq OWNER TO postgres;
-
---
--- Name: sibling_student_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE public.sibling_student_id_seq OWNED BY public.sibling.student_id;
 
 
 --
@@ -1504,13 +1435,6 @@ ALTER SEQUENCE public.type_of_lesson_availability_id_seq OWNED BY public.type_of
 
 
 --
--- Name: booking student_id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.booking ALTER COLUMN student_id SET DEFAULT nextval('public.booking_student_id_seq'::regclass);
-
-
---
 -- Name: booking id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1522,41 +1446,6 @@ ALTER TABLE ONLY public.booking ALTER COLUMN id SET DEFAULT nextval('public.book
 --
 
 ALTER TABLE ONLY public.contact_person ALTER COLUMN id SET DEFAULT nextval('public.contact_person_id_seq'::regclass);
-
-
---
--- Name: contact_person student_id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.contact_person ALTER COLUMN student_id SET DEFAULT nextval('public.contact_person_student_id_seq'::regclass);
-
-
---
--- Name: contact_person_email contact_person_id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.contact_person_email ALTER COLUMN contact_person_id SET DEFAULT nextval('public.contact_person_email_contact_person_id_seq'::regclass);
-
-
---
--- Name: contact_person_email email_id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.contact_person_email ALTER COLUMN email_id SET DEFAULT nextval('public.contact_person_email_email_id_seq'::regclass);
-
-
---
--- Name: contact_person_phone contact_person_id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.contact_person_phone ALTER COLUMN contact_person_id SET DEFAULT nextval('public.contact_person_phone_contact_person_id_seq'::regclass);
-
-
---
--- Name: contact_person_phone phone_id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.contact_person_phone ALTER COLUMN phone_id SET DEFAULT nextval('public.contact_person_phone_phone_id_seq'::regclass);
 
 
 --
@@ -1574,24 +1463,10 @@ ALTER TABLE ONLY public.ensemble ALTER COLUMN id SET DEFAULT nextval('public.ens
 
 
 --
--- Name: ensemble group_based_lesson_id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.ensemble ALTER COLUMN group_based_lesson_id SET DEFAULT nextval('public.ensemble_group_based_lesson_id_seq'::regclass);
-
-
---
 -- Name: group_based_lesson id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.group_based_lesson ALTER COLUMN id SET DEFAULT nextval('public.group_based_lesson_id_seq'::regclass);
-
-
---
--- Name: group_based_lesson lesson_id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.group_based_lesson ALTER COLUMN lesson_id SET DEFAULT nextval('public.group_based_lesson_lesson_id_seq'::regclass);
 
 
 --
@@ -1602,24 +1477,10 @@ ALTER TABLE ONLY public.group_lesson ALTER COLUMN id SET DEFAULT nextval('public
 
 
 --
--- Name: group_lesson group_based_lesson_id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.group_lesson ALTER COLUMN group_based_lesson_id SET DEFAULT nextval('public.group_lesson_group_based_lesson_id_seq'::regclass);
-
-
---
 -- Name: individual_lesson id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.individual_lesson ALTER COLUMN id SET DEFAULT nextval('public.individual_lesson_id_seq'::regclass);
-
-
---
--- Name: individual_lesson lesson_id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.individual_lesson ALTER COLUMN lesson_id SET DEFAULT nextval('public.individual_lesson_lesson_id_seq'::regclass);
 
 
 --
@@ -1630,66 +1491,10 @@ ALTER TABLE ONLY public.instructor ALTER COLUMN id SET DEFAULT nextval('public.i
 
 
 --
--- Name: instructor person_id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.instructor ALTER COLUMN person_id SET DEFAULT nextval('public.instructor_person_id_seq'::regclass);
-
-
---
--- Name: instructor_known_instruments instructor_id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.instructor_known_instruments ALTER COLUMN instructor_id SET DEFAULT nextval('public.instructor_known_instruments_instructor_id_seq'::regclass);
-
-
---
--- Name: instructor_known_instruments known_instruments_id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.instructor_known_instruments ALTER COLUMN known_instruments_id SET DEFAULT nextval('public.instructor_known_instruments_known_instruments_id_seq'::regclass);
-
-
---
--- Name: instructor_type_of_lesson_availability instructor_id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.instructor_type_of_lesson_availability ALTER COLUMN instructor_id SET DEFAULT nextval('public.instructor_type_of_lesson_availability_instructor_id_seq'::regclass);
-
-
---
--- Name: instructor_type_of_lesson_availability type_of_lesson_availability_id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.instructor_type_of_lesson_availability ALTER COLUMN type_of_lesson_availability_id SET DEFAULT nextval('public.instructor_type_of_lesson_ava_type_of_lesson_availability_i_seq'::regclass);
-
-
---
 -- Name: instrumental_lease id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.instrumental_lease ALTER COLUMN id SET DEFAULT nextval('public.instrumental_lease_id_seq'::regclass);
-
-
---
--- Name: instrumental_lease student_id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.instrumental_lease ALTER COLUMN student_id SET DEFAULT nextval('public.instrumental_lease_student_id_seq'::regclass);
-
-
---
--- Name: instrumental_lease invoice_id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.instrumental_lease ALTER COLUMN invoice_id SET DEFAULT nextval('public.instrumental_lease_invoice_id_seq'::regclass);
-
-
---
--- Name: instrumental_lease instrumental_storage_id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.instrumental_lease ALTER COLUMN instrumental_storage_id SET DEFAULT nextval('public.instrumental_lease_instrumental_storage_id_seq'::regclass);
 
 
 --
@@ -1721,13 +1526,6 @@ ALTER TABLE ONLY public.lesson ALTER COLUMN id SET DEFAULT nextval('public.lesso
 
 
 --
--- Name: lesson instructor_id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.lesson ALTER COLUMN instructor_id SET DEFAULT nextval('public.lesson_instructor_id_seq'::regclass);
-
-
---
 -- Name: lesson_price_scheme id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1739,34 +1537,6 @@ ALTER TABLE ONLY public.lesson_price_scheme ALTER COLUMN id SET DEFAULT nextval(
 --
 
 ALTER TABLE ONLY public.person ALTER COLUMN id SET DEFAULT nextval('public.person_id_seq'::regclass);
-
-
---
--- Name: person_email person_id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.person_email ALTER COLUMN person_id SET DEFAULT nextval('public.person_email_person_id_seq'::regclass);
-
-
---
--- Name: person_email email_id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.person_email ALTER COLUMN email_id SET DEFAULT nextval('public.person_email_email_id_seq'::regclass);
-
-
---
--- Name: person_phone person_id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.person_phone ALTER COLUMN person_id SET DEFAULT nextval('public.person_phone_person_id_seq'::regclass);
-
-
---
--- Name: person_phone phone_id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.person_phone ALTER COLUMN phone_id SET DEFAULT nextval('public.person_phone_phone_id_seq'::regclass);
 
 
 --
@@ -1784,20 +1554,6 @@ ALTER TABLE ONLY public.sibling ALTER COLUMN id SET DEFAULT nextval('public.sibl
 
 
 --
--- Name: sibling sibling_student_id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.sibling ALTER COLUMN sibling_student_id SET DEFAULT nextval('public.sibling_sibling_student_id_seq'::regclass);
-
-
---
--- Name: sibling student_id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.sibling ALTER COLUMN student_id SET DEFAULT nextval('public.sibling_student_id_seq'::regclass);
-
-
---
 -- Name: skill_level id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1809,41 +1565,6 @@ ALTER TABLE ONLY public.skill_level ALTER COLUMN id SET DEFAULT nextval('public.
 --
 
 ALTER TABLE ONLY public.student ALTER COLUMN id SET DEFAULT nextval('public.student_id_seq'::regclass);
-
-
---
--- Name: student person_id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.student ALTER COLUMN person_id SET DEFAULT nextval('public.student_person_id_seq'::regclass);
-
-
---
--- Name: student_sibling student_id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.student_sibling ALTER COLUMN student_id SET DEFAULT nextval('public.student_sibling_student_id_seq'::regclass);
-
-
---
--- Name: student_sibling sibling_id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.student_sibling ALTER COLUMN sibling_id SET DEFAULT nextval('public.student_sibling_sibling_id_seq'::regclass);
-
-
---
--- Name: student_skill_level student_id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.student_skill_level ALTER COLUMN student_id SET DEFAULT nextval('public.student_skill_level_student_id_seq'::regclass);
-
-
---
--- Name: student_skill_level skill_level_id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.student_skill_level ALTER COLUMN skill_level_id SET DEFAULT nextval('public.student_skill_level_skill_level_id_seq'::regclass);
 
 
 --
@@ -2482,14 +2203,6 @@ ALTER TABLE ONLY public.contact_person
 --
 
 ALTER TABLE ONLY public.student_skill_level
-    ADD CONSTRAINT student_id FOREIGN KEY (student_id) REFERENCES public.student(id);
-
-
---
--- Name: sibling student_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.sibling
     ADD CONSTRAINT student_id FOREIGN KEY (student_id) REFERENCES public.student(id);
 
 
