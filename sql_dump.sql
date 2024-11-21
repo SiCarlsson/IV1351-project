@@ -26,7 +26,7 @@ SET default_table_access_method = heap;
 --
 
 CREATE TABLE public.booking (
-    id character varying NOT NULL,
+    id integer NOT NULL,
     booking_date date NOT NULL,
     student_id integer NOT NULL,
     invoice_id integer NOT NULL
@@ -860,115 +860,6 @@ ALTER SEQUENCE public.instrumental_storage_id_seq OWNED BY public.instrumental_s
 
 
 --
--- Name: invoice; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.invoice (
-    id integer NOT NULL,
-    "OCR" character varying(500) NOT NULL,
-    amount_of_lessons character varying(100) NOT NULL,
-    payment_date date NOT NULL,
-    description character varying(2500),
-    total_cost character varying(100) NOT NULL,
-    amount_paid character varying(100),
-    discount_percentage character varying(3),
-    student_id integer NOT NULL,
-    instrumental_price_scheme_id integer NOT NULL,
-    lesson_price_scheme_id integer NOT NULL
-);
-
-
-ALTER TABLE public.invoice OWNER TO postgres;
-
---
--- Name: invoice_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE public.invoice_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER SEQUENCE public.invoice_id_seq OWNER TO postgres;
-
---
--- Name: invoice_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE public.invoice_id_seq OWNED BY public.invoice.id;
-
-
---
--- Name: invoice_instrumental_price_scheme_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE public.invoice_instrumental_price_scheme_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER SEQUENCE public.invoice_instrumental_price_scheme_id_seq OWNER TO postgres;
-
---
--- Name: invoice_instrumental_price_scheme_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE public.invoice_instrumental_price_scheme_id_seq OWNED BY public.invoice.instrumental_price_scheme_id;
-
-
---
--- Name: invoice_lesson_price_scheme_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE public.invoice_lesson_price_scheme_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER SEQUENCE public.invoice_lesson_price_scheme_id_seq OWNER TO postgres;
-
---
--- Name: invoice_lesson_price_scheme_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE public.invoice_lesson_price_scheme_id_seq OWNED BY public.invoice.lesson_price_scheme_id;
-
-
---
--- Name: invoice_student_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE public.invoice_student_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER SEQUENCE public.invoice_student_id_seq OWNER TO postgres;
-
---
--- Name: invoice_student_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE public.invoice_student_id_seq OWNED BY public.invoice.student_id;
-
-
---
 -- Name: known_instruments; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1119,142 +1010,6 @@ ALTER SEQUENCE public.lesson_price_scheme_id_seq OWNER TO postgres;
 --
 
 ALTER SEQUENCE public.lesson_price_scheme_id_seq OWNED BY public.lesson_price_scheme.id;
-
-
---
--- Name: pay_slip; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.pay_slip (
-    id integer NOT NULL,
-    salary_paid_out character varying(100),
-    lesson_price_scheme_id integer NOT NULL,
-    instructor_id integer NOT NULL
-);
-
-
-ALTER TABLE public.pay_slip OWNER TO postgres;
-
---
--- Name: pay_slip_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE public.pay_slip_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER SEQUENCE public.pay_slip_id_seq OWNER TO postgres;
-
---
--- Name: pay_slip_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE public.pay_slip_id_seq OWNED BY public.pay_slip.id;
-
-
---
--- Name: pay_slip_instructor_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE public.pay_slip_instructor_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER SEQUENCE public.pay_slip_instructor_id_seq OWNER TO postgres;
-
---
--- Name: pay_slip_instructor_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE public.pay_slip_instructor_id_seq OWNED BY public.pay_slip.instructor_id;
-
-
---
--- Name: pay_slip_lesson_price_scheme_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE public.pay_slip_lesson_price_scheme_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER SEQUENCE public.pay_slip_lesson_price_scheme_id_seq OWNER TO postgres;
-
---
--- Name: pay_slip_lesson_price_scheme_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE public.pay_slip_lesson_price_scheme_id_seq OWNED BY public.pay_slip.lesson_price_scheme_id;
-
-
---
--- Name: pay_slip_skill_level_of_lesson; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.pay_slip_skill_level_of_lesson (
-    skill_level_of_lesson_id integer NOT NULL,
-    pay_slip_id integer NOT NULL
-);
-
-
-ALTER TABLE public.pay_slip_skill_level_of_lesson OWNER TO postgres;
-
---
--- Name: pay_slip_skill_level_of_lesson_pay_slip_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE public.pay_slip_skill_level_of_lesson_pay_slip_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER SEQUENCE public.pay_slip_skill_level_of_lesson_pay_slip_id_seq OWNER TO postgres;
-
---
--- Name: pay_slip_skill_level_of_lesson_pay_slip_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE public.pay_slip_skill_level_of_lesson_pay_slip_id_seq OWNED BY public.pay_slip_skill_level_of_lesson.pay_slip_id;
-
-
---
--- Name: pay_slip_skill_level_of_lesson_skill_level_of_lesson_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE public.pay_slip_skill_level_of_lesson_skill_level_of_lesson_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER SEQUENCE public.pay_slip_skill_level_of_lesson_skill_level_of_lesson_id_seq OWNER TO postgres;
-
---
--- Name: pay_slip_skill_level_of_lesson_skill_level_of_lesson_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE public.pay_slip_skill_level_of_lesson_skill_level_of_lesson_id_seq OWNED BY public.pay_slip_skill_level_of_lesson.skill_level_of_lesson_id;
 
 
 --
@@ -1554,41 +1309,6 @@ ALTER SEQUENCE public.skill_level_id_seq OWNER TO postgres;
 --
 
 ALTER SEQUENCE public.skill_level_id_seq OWNED BY public.skill_level.id;
-
-
---
--- Name: skill_level_of_lesson; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.skill_level_of_lesson (
-    id integer NOT NULL,
-    skill_level character varying(100) NOT NULL,
-    amount_of_lessons character varying(100) NOT NULL
-);
-
-
-ALTER TABLE public.skill_level_of_lesson OWNER TO postgres;
-
---
--- Name: skill_level_of_lesson_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE public.skill_level_of_lesson_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER SEQUENCE public.skill_level_of_lesson_id_seq OWNER TO postgres;
-
---
--- Name: skill_level_of_lesson_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE public.skill_level_of_lesson_id_seq OWNED BY public.skill_level_of_lesson.id;
 
 
 --
@@ -2000,34 +1720,6 @@ ALTER TABLE ONLY public.instrumental_storage ALTER COLUMN id SET DEFAULT nextval
 
 
 --
--- Name: invoice id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.invoice ALTER COLUMN id SET DEFAULT nextval('public.invoice_id_seq'::regclass);
-
-
---
--- Name: invoice student_id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.invoice ALTER COLUMN student_id SET DEFAULT nextval('public.invoice_student_id_seq'::regclass);
-
-
---
--- Name: invoice instrumental_price_scheme_id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.invoice ALTER COLUMN instrumental_price_scheme_id SET DEFAULT nextval('public.invoice_instrumental_price_scheme_id_seq'::regclass);
-
-
---
--- Name: invoice lesson_price_scheme_id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.invoice ALTER COLUMN lesson_price_scheme_id SET DEFAULT nextval('public.invoice_lesson_price_scheme_id_seq'::regclass);
-
-
---
 -- Name: known_instruments id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2060,41 +1752,6 @@ ALTER TABLE ONLY public.lesson ALTER COLUMN booking_id SET DEFAULT nextval('publ
 --
 
 ALTER TABLE ONLY public.lesson_price_scheme ALTER COLUMN id SET DEFAULT nextval('public.lesson_price_scheme_id_seq'::regclass);
-
-
---
--- Name: pay_slip id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.pay_slip ALTER COLUMN id SET DEFAULT nextval('public.pay_slip_id_seq'::regclass);
-
-
---
--- Name: pay_slip lesson_price_scheme_id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.pay_slip ALTER COLUMN lesson_price_scheme_id SET DEFAULT nextval('public.pay_slip_lesson_price_scheme_id_seq'::regclass);
-
-
---
--- Name: pay_slip instructor_id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.pay_slip ALTER COLUMN instructor_id SET DEFAULT nextval('public.pay_slip_instructor_id_seq'::regclass);
-
-
---
--- Name: pay_slip_skill_level_of_lesson skill_level_of_lesson_id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.pay_slip_skill_level_of_lesson ALTER COLUMN skill_level_of_lesson_id SET DEFAULT nextval('public.pay_slip_skill_level_of_lesson_skill_level_of_lesson_id_seq'::regclass);
-
-
---
--- Name: pay_slip_skill_level_of_lesson pay_slip_id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.pay_slip_skill_level_of_lesson ALTER COLUMN pay_slip_id SET DEFAULT nextval('public.pay_slip_skill_level_of_lesson_pay_slip_id_seq'::regclass);
 
 
 --
@@ -2168,13 +1825,6 @@ ALTER TABLE ONLY public.skill_level ALTER COLUMN id SET DEFAULT nextval('public.
 
 
 --
--- Name: skill_level_of_lesson id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.skill_level_of_lesson ALTER COLUMN id SET DEFAULT nextval('public.skill_level_of_lesson_id_seq'::regclass);
-
-
---
 -- Name: student id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2237,14 +1887,6 @@ ALTER TABLE ONLY public.instructor
 
 ALTER TABLE ONLY public.person
     ADD CONSTRAINT "Unique id" UNIQUE (id);
-
-
---
--- Name: invoice Unique invoice; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.invoice
-    ADD CONSTRAINT "Unique invoice" UNIQUE ("OCR");
 
 
 --
@@ -2472,22 +2114,6 @@ ALTER TABLE ONLY public.instrumental_storage
 
 
 --
--- Name: invoice invoice_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.invoice
-    ADD CONSTRAINT invoice_id_key UNIQUE (id);
-
-
---
--- Name: invoice invoice_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.invoice
-    ADD CONSTRAINT invoice_pkey PRIMARY KEY (id);
-
-
---
 -- Name: known_instruments known_instruments_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2533,30 +2159,6 @@ ALTER TABLE ONLY public.lesson_price_scheme
 
 ALTER TABLE ONLY public.lesson_price_scheme
     ADD CONSTRAINT lesson_price_scheme_pkey PRIMARY KEY (id);
-
-
---
--- Name: pay_slip pay_slip_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.pay_slip
-    ADD CONSTRAINT pay_slip_id_key UNIQUE (id);
-
-
---
--- Name: pay_slip pay_slip_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.pay_slip
-    ADD CONSTRAINT pay_slip_pkey PRIMARY KEY (id);
-
-
---
--- Name: pay_slip_skill_level_of_lesson pay_slip_skill_level_of_lesson_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.pay_slip_skill_level_of_lesson
-    ADD CONSTRAINT pay_slip_skill_level_of_lesson_pkey PRIMARY KEY (skill_level_of_lesson_id, pay_slip_id);
 
 
 --
@@ -2637,14 +2239,6 @@ ALTER TABLE ONLY public.sibling
 
 ALTER TABLE ONLY public.skill_level
     ADD CONSTRAINT skill_level_id_key UNIQUE (id);
-
-
---
--- Name: skill_level_of_lesson skill_level_of_lesson_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.skill_level_of_lesson
-    ADD CONSTRAINT skill_level_of_lesson_pkey PRIMARY KEY (id);
 
 
 --
@@ -2760,14 +2354,6 @@ ALTER TABLE ONLY public.instructor_type_of_lesson_availability
 
 
 --
--- Name: pay_slip instructor_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.pay_slip
-    ADD CONSTRAINT instructor_id FOREIGN KEY (instructor_id) REFERENCES public.instructor(id);
-
-
---
 -- Name: instructor_known_instruments instructor_known_instruments_instructor_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2792,35 +2378,11 @@ ALTER TABLE ONLY public.instructor
 
 
 --
--- Name: invoice instrumental_price_scheme_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.invoice
-    ADD CONSTRAINT instrumental_price_scheme_id FOREIGN KEY (instrumental_price_scheme_id) REFERENCES public.instrumental_price_scheme(id);
-
-
---
 -- Name: instrumental_lease instrumental_storage_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.instrumental_lease
     ADD CONSTRAINT instrumental_storage_id FOREIGN KEY (instrumental_storage_id) REFERENCES public.instrumental_storage(id) NOT VALID;
-
-
---
--- Name: instrumental_lease invoice_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.instrumental_lease
-    ADD CONSTRAINT invoice_id FOREIGN KEY (invoice_id) REFERENCES public.invoice(id);
-
-
---
--- Name: booking invoice_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.booking
-    ADD CONSTRAINT invoice_id FOREIGN KEY (invoice_id) REFERENCES public.invoice(id);
 
 
 --
@@ -2837,38 +2399,6 @@ ALTER TABLE ONLY public.individual_lesson
 
 ALTER TABLE ONLY public.group_based_lesson
     ADD CONSTRAINT lesson_id FOREIGN KEY (lesson_id) REFERENCES public.lesson(id);
-
-
---
--- Name: invoice lesson_price_scheme_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.invoice
-    ADD CONSTRAINT lesson_price_scheme_id FOREIGN KEY (lesson_price_scheme_id) REFERENCES public.lesson_price_scheme(id);
-
-
---
--- Name: pay_slip lesson_price_scheme_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.pay_slip
-    ADD CONSTRAINT lesson_price_scheme_id FOREIGN KEY (lesson_price_scheme_id) REFERENCES public.lesson_price_scheme(id);
-
-
---
--- Name: pay_slip_skill_level_of_lesson pay_slip_skill_level_of_lesson_pay_slip_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.pay_slip_skill_level_of_lesson
-    ADD CONSTRAINT pay_slip_skill_level_of_lesson_pay_slip_id_fkey FOREIGN KEY (pay_slip_id) REFERENCES public.pay_slip(id);
-
-
---
--- Name: pay_slip_skill_level_of_lesson pay_slip_skill_level_of_lesson_skill_level_of_lesson_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.pay_slip_skill_level_of_lesson
-    ADD CONSTRAINT pay_slip_skill_level_of_lesson_skill_level_of_lesson_id_fkey FOREIGN KEY (skill_level_of_lesson_id) REFERENCES public.skill_level_of_lesson(id);
 
 
 --
@@ -2917,14 +2447,6 @@ ALTER TABLE ONLY public.student_sibling
 
 ALTER TABLE ONLY public.student_skill_level
     ADD CONSTRAINT skill_level_id FOREIGN KEY (skill_level_id) REFERENCES public.skill_level(id);
-
-
---
--- Name: invoice student_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.invoice
-    ADD CONSTRAINT student_id FOREIGN KEY (student_id) REFERENCES public.student(id);
 
 
 --
