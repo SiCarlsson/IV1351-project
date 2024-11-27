@@ -9,13 +9,13 @@ VALUES
   ('Vivien','Knight',200285840255,'Ap #504-7831 Urna. Rd.','Boo','55811'),
   ('Jacob','Garrett',613276812763,'329-6594 Diam. Street','Gävle','97641');
 
-INSERT INTO public.student (age,has_sibling,person_id)
+INSERT INTO public.student (age,person_id)
 VALUES
-  (102,'No',1),
-  (4,'Yes',2),
-  (54,'Yes',3),
-  (76,'Yes',4),
-  (25,'No',5);
+  (102,1),
+  (4,2),
+  (54,3),
+  (76,4),
+  (25,5);
 
 INSERT INTO public.skill_level (skill_level, instrument)
 VALUES
@@ -235,15 +235,16 @@ VALUES
 
 INSERT INTO public.sibling (student_id)
 VALUES
+(1),
 (2),
 (3),
-(4);
+(5);
 
 INSERT INTO public.student_sibling (student_id,sibling_id)
 VALUES
-(2,2),
+(1,4),
+(5,1),
 (2,3),
-(3,1),
-(3,3),
-(4,1),
-(4,2);
+(3,2),
+(3,4),
+(5,3);

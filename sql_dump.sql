@@ -1179,7 +1179,6 @@ ALTER SEQUENCE public.skill_level_id_seq OWNED BY public.skill_level.id;
 CREATE TABLE public.student (
     id integer NOT NULL,
     age character varying(3) NOT NULL,
-    has_sibling boolean NOT NULL,
     person_id integer NOT NULL
 );
 
