@@ -199,10 +199,10 @@ VALUES
 (1,2),
 (2,3),
 (3,4),
-(4,1),
-(5,5),
-(4,3),
-(5,4);
+(6,1),
+(9,5),
+(6,3),
+(9,4);
 
 INSERT INTO public.instrumental_storage (instrument_brand, quantity)
 VALUES
