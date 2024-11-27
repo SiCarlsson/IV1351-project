@@ -22,63 +22,6 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
--- Name: booking; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.booking (
-    booking_date timestamp without time zone NOT NULL,
-    student_id integer NOT NULL,
-    id integer NOT NULL
-);
-
-
-ALTER TABLE public.booking OWNER TO postgres;
-
---
--- Name: booking_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE public.booking_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER SEQUENCE public.booking_id_seq OWNER TO postgres;
-
---
--- Name: booking_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE public.booking_id_seq OWNED BY public.booking.id;
-
-
---
--- Name: booking_student_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE public.booking_student_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER SEQUENCE public.booking_student_id_seq OWNER TO postgres;
-
---
--- Name: booking_student_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE public.booking_student_id_seq OWNED BY public.booking.student_id;
-
-
---
 -- Name: contact_person; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -883,18 +826,6 @@ CREATE TABLE public.lesson (
 ALTER TABLE public.lesson OWNER TO postgres;
 
 --
--- Name: lesson_booking; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.lesson_booking (
-    lesson_id integer NOT NULL,
-    booking_id integer NOT NULL
-);
-
-
-ALTER TABLE public.lesson_booking OWNER TO postgres;
-
---
 -- Name: lesson_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -974,6 +905,18 @@ ALTER SEQUENCE public.lesson_price_scheme_id_seq OWNER TO postgres;
 
 ALTER SEQUENCE public.lesson_price_scheme_id_seq OWNED BY public.lesson_price_scheme.id;
 
+
+--
+-- Name: lesson_student; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.lesson_student (
+    lesson_id integer NOT NULL,
+    student_id integer NOT NULL
+);
+
+
+ALTER TABLE public.lesson_student OWNER TO postgres;
 
 --
 -- Name: person; Type: TABLE; Schema: public; Owner: postgres
@@ -1237,7 +1180,6 @@ CREATE TABLE public.student (
     id integer NOT NULL,
     age character varying(3) NOT NULL,
     has_sibling boolean NOT NULL,
-    active_leases character varying(1) NOT NULL,
     person_id integer NOT NULL
 );
 
@@ -1435,13 +1377,6 @@ ALTER SEQUENCE public.type_of_lesson_availability_id_seq OWNED BY public.type_of
 
 
 --
--- Name: booking id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.booking ALTER COLUMN id SET DEFAULT nextval('public.booking_id_seq'::regclass);
-
-
---
 -- Name: contact_person id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1596,22 +1531,6 @@ ALTER TABLE ONLY public.person
 
 ALTER TABLE ONLY public.person
     ADD CONSTRAINT "Unique person" UNIQUE (social_security_number);
-
-
---
--- Name: booking booking_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.booking
-    ADD CONSTRAINT booking_id_key UNIQUE (id);
-
-
---
--- Name: booking booking_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.booking
-    ADD CONSTRAINT booking_pkey PRIMARY KEY (id);
 
 
 --
@@ -1831,11 +1750,11 @@ ALTER TABLE ONLY public.known_instruments
 
 
 --
--- Name: lesson_booking lesson_booking_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: lesson_student lesson_booking_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.lesson_booking
-    ADD CONSTRAINT lesson_booking_pkey PRIMARY KEY (lesson_id, booking_id);
+ALTER TABLE ONLY public.lesson_student
+    ADD CONSTRAINT lesson_booking_pkey PRIMARY KEY (lesson_id, student_id);
 
 
 --
@@ -2095,22 +2014,6 @@ ALTER TABLE ONLY public.instrumental_lease
 
 
 --
--- Name: lesson_booking lesson_booking_booking_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.lesson_booking
-    ADD CONSTRAINT lesson_booking_booking_id_fkey FOREIGN KEY (booking_id) REFERENCES public.booking(id);
-
-
---
--- Name: lesson_booking lesson_booking_lesson_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.lesson_booking
-    ADD CONSTRAINT lesson_booking_lesson_id_fkey FOREIGN KEY (lesson_id) REFERENCES public.lesson(id);
-
-
---
 -- Name: individual_lesson lesson_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2124,6 +2027,22 @@ ALTER TABLE ONLY public.individual_lesson
 
 ALTER TABLE ONLY public.group_based_lesson
     ADD CONSTRAINT lesson_id FOREIGN KEY (lesson_id) REFERENCES public.lesson(id);
+
+
+--
+-- Name: lesson_student lesson_student_lesson_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.lesson_student
+    ADD CONSTRAINT lesson_student_lesson_id_fkey FOREIGN KEY (lesson_id) REFERENCES public.lesson(id) NOT VALID;
+
+
+--
+-- Name: lesson_student lesson_student_student_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.lesson_student
+    ADD CONSTRAINT lesson_student_student_id_fkey FOREIGN KEY (student_id) REFERENCES public.student(id) NOT VALID;
 
 
 --
@@ -2179,14 +2098,6 @@ ALTER TABLE ONLY public.student_skill_level
 --
 
 ALTER TABLE ONLY public.instrumental_lease
-    ADD CONSTRAINT student_id FOREIGN KEY (student_id) REFERENCES public.student(id);
-
-
---
--- Name: booking student_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.booking
     ADD CONSTRAINT student_id FOREIGN KEY (student_id) REFERENCES public.student(id);
 
 

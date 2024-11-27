@@ -9,13 +9,13 @@ VALUES
   ('Vivien','Knight',200285840255,'Ap #504-7831 Urna. Rd.','Boo','55811'),
   ('Jacob','Garrett',613276812763,'329-6594 Diam. Street','Gävle','97641');
 
-INSERT INTO public.student (age,has_sibling,active_leases,person_id)
+INSERT INTO public.student (age,has_sibling,person_id)
 VALUES
-  (102,'No',1,1),
-  (4,'Yes',1,2),
-  (54,'Yes',0,3),
-  (76,'Yes',2,4),
-  (25,'No',0,5);
+  (102,'No',1),
+  (4,'Yes',2),
+  (54,'Yes',3),
+  (76,'Yes',4),
+  (25,'No',5);
 
 INSERT INTO public.skill_level (skill_level, instrument)
 VALUES
@@ -131,24 +131,19 @@ VALUES
 	(2,2),
 	(2,3),
 	(3,2); 
-
-INSERT INTO public.booking (booking_date, student_id)
-VALUES
-('2024-11-21 10:00:00',1),
-('2024-11-22 11:30:00',2),
-('2024-11-23 09:00:00',3),
-('2024-11-24 14:15:00',4),
-('2024-11-25 16:00:00',5),
-('2024-11-26 08:45:00',3),
-('2024-11-28 15:30:00',4);
-    
+ 
 INSERT INTO public.lesson (date, time, duration, instructor_id)
 VALUES
+('2024-10-22', '10:00:00', 60, 1),
+('2024-10-23', '11:30:00', 45, 2),
+('2024-10-24', '09:00:00', 90, 3),
+('2024-10-25', '14:15:00', 30, 1),
 ('2024-11-22', '10:00:00', 60, 1),
 ('2024-11-23', '11:30:00', 45, 2),
 ('2024-11-24', '09:00:00', 90, 3),
-('2024-11-25', '14:15:00', 30, 1),
-('2024-11-26', '16:00:00', 60, 2);
+('2024-12-25', '14:15:00', 30, 1),
+('2024-12-26', '16:00:00', 60, 2),
+('2024-12-26', '16:00:00', 60, 2);
 
 
 INSERT INTO public.lesson_price_scheme (lesson_type, skill_level, price_per_lesson, price_from_date)
@@ -176,30 +171,38 @@ INSERT INTO public.individual_lesson (specific_instrument, lesson_id)
 VALUES
 ('Piano', 1),
 ('Guitar', 2),
-('Piano', 3);
+('Drums', 3),
+('Guitar', 4),
+('Piano', 5);
 
 INSERT INTO public.group_based_lesson (minimum_number_of_spots, maximum_number_of_spots,lesson_id)
 VALUES
-(2,10,4),
-(5,15,5);
+(2,10,6),
+(5,10,7),
+(7,12,8),
+(10,15,9),
+(5,15,10);
 
 INSERT INTO public.group_lesson (skill_level,specific_instrument,group_based_lesson_id)
 VALUES
-('Intermediate','Piano',1);
+('Intermediate','Piano',1),
+('Advanced','Drums',2),
+('Intermediate','Guitar',3);
 
 INSERT INTO public.ensemble (genre,group_based_lesson_id)
 VALUES
-('Jazz',2);
+('Jazz',4),
+('Gospel',5);
 
-INSERT INTO public.lesson_booking (lesson_id,booking_id)
+INSERT INTO public.lesson_student (lesson_id,student_id)
 VALUES
 (1,2),
 (2,3),
 (3,4),
 (4,1),
 (5,5),
-(4,7),
-(5,6);
+(4,3),
+(5,4);
 
 INSERT INTO public.instrumental_storage (instrument_brand, quantity)
 VALUES
