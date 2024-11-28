@@ -84,8 +84,8 @@ FROM
 WHERE
     maximum_number_of_spots IS NOT NULL
     AND genre IS NOT NULL
-    AND lesson.date >= date_trunc('week', CURRENT_DATE) + INTERVAL '7 days'
-    AND lesson.date < date_trunc('week', CURRENT_DATE) + INTERVAL '14 days'
+    AND lesson.date >= date_trunc('week', CURRENT_DATE) + INTERVAL '1 week'
+    AND lesson.date < date_trunc('week', CURRENT_DATE) + INTERVAL '2 weeks'
 GROUP BY
     lesson.id,
     genre,
