@@ -14,6 +14,8 @@ FROM
     LEFT JOIN group_based_lesson ON lesson.id = group_based_lesson.lesson_id
     LEFT JOIN group_lesson ON group_based_lesson.id = group_lesson.group_based_lesson_id
     LEFT JOIN ensemble ON group_based_lesson.id = ensemble.group_based_lesson_id
+GROUP BY month
+ORDER BY month DESC
     
     
 --
@@ -72,7 +74,7 @@ SELECT
         WHEN COUNT(student_id) = CAST(maximum_number_of_spots AS BIGINT) THEN 'No Seats'
         WHEN COUNT(student_id) >= CAST(maximum_number_of_spots AS BIGINT) - 2
         AND COUNT(student_id) < CAST(maximum_number_of_spots AS BIGINT) THEN '1 or 2 Seats'
-        ELSE 'Seats Available'
+        ELSE 'Many Seats'
     END AS available_seats
 FROM
     lesson
@@ -87,4 +89,4 @@ GROUP BY
     genre,
     maximum_number_of_spots
 ORDER BY
-    day ASC;
+    day DESC;

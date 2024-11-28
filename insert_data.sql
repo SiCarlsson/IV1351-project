@@ -1,21 +1,43 @@
 INSERT INTO public.person (first_name,last_name,social_security_number,street_name,city,zip_code)
 VALUES
+-- students
   ('Glenna','Ward',451263943466,'Ap #811-686 Fermentum St.','Gävle','03385'),
   ('Kyra','Morrison',654426128616,'425-9573 At Ave','Linköping','31662'),
   ('Nigel','Duffy',507918322794,'Ap #389-567 A, Rd.','Trollhättan','03822'),
   ('Kaye','Jensen',128801925403,'P.O. Box 922, 6009 Ipsum St.','Bollnäs','87287'),
   ('Duncan','Morse',848308449621,'811-4223 Dis Av.','Hofors','52546'),
+  ('Anita','Harrison',328497651293,'9158 Gravida Ave.','Stockholm','11432'),
+  ('Ethan','Waters',509637128755,'P.O. Box 140, 1594 Mauris St.','Malmö','21741'),
+  ('Sofia','Blair',629385273821,'Ap #234-9871 Libero Rd.','Uppsala','75263'),
+  ('Lucas','Erickson',758192346820,'759-8231 Amet Ave.','Lund','22233'),
+  ('Emma','Johansson',498716382940,'P.O. Box 891, 4732 Elit Street','Örebro','70231'),
+  ('Milo','Andersson',917283640153,'504-9817 Congue Ave.','Helsingborg','25241'),
+  ('Freya','Svensson',304719856473,'Ap #768-2456 Sapien Rd.','Göteborg','41252'),
+  ('William','Peterson',412936582019,'237-1947 Mollis Street','Västerås','72470'),
+  ('Alicia','Karlsson',506817329481,'P.O. Box 789, 8947 Tincidunt Rd.','Östersund','83143'),
+  ('Oscar','Lindgren',329485672018,'723-1846 Facilisis Rd.','Jönköping','55320'),
+-- instructors
   ('Kirestin','Combs',324929538938,'Ap #596-8613 Donec Street','Motala','56240'),
   ('Vivien','Knight',200285840255,'Ap #504-7831 Urna. Rd.','Boo','55811'),
   ('Jacob','Garrett',613276812763,'329-6594 Diam. Street','Gävle','97641');
 
 INSERT INTO public.student (age,person_id)
 VALUES
-  (102,1),
-  (4,2),
-  (54,3),
-  (76,4),
-  (25,5);
+  (22, 1),
+  (12, 2),
+  (25, 3),
+  (20, 4),
+  (23, 5),
+  (21, 6),
+  (24, 7),
+  (18, 8),
+  (22, 9),
+  (19, 10),
+  (26, 11),
+  (20, 12),
+  (23, 13),
+  (21, 14),
+  (25, 15);
 
 INSERT INTO public.skill_level (skill_level, instrument)
 VALUES
@@ -143,7 +165,9 @@ VALUES
 ('2024-11-24', '09:00:00', 90, 3),
 ('2024-12-25', '14:15:00', 30, 1),
 ('2024-12-26', '16:00:00', 60, 2),
-('2024-12-26', '16:00:00', 60, 2);
+('2024-12-26', '16:00:00', 60, 2),
+('2024-12-27', '15:00:00', 60, 2);
+
 
 
 INSERT INTO public.lesson_price_scheme (lesson_type, skill_level, price_per_lesson, price_from_date)
@@ -180,8 +204,9 @@ VALUES
 (2,10,6),
 (5,10,7),
 (7,12,8),
-(10,15,9),
-(5,15,10);
+(10,12,9),
+(5,10,10),
+(4,8,11);
 
 INSERT INTO public.group_lesson (skill_level,specific_instrument,group_based_lesson_id)
 VALUES
@@ -192,7 +217,8 @@ VALUES
 INSERT INTO public.ensemble (genre,group_based_lesson_id)
 VALUES
 ('Jazz',4),
-('Gospel',5);
+('Gospel',5),
+('Rock',6);
 
 INSERT INTO public.lesson_student (lesson_id,student_id)
 VALUES
@@ -202,7 +228,25 @@ VALUES
 (6,1),
 (9,5),
 (6,3),
-(9,4);
+(9,4),
+(9,6),
+(9,7),
+(9,8),
+(9,9),
+(9,10),
+(9,11),
+(9,12),
+(9,13),
+(10,1),
+(10,3),
+(10,5),
+(10,7),
+(10,9),
+(10,11),
+(10,13),
+(10,15),
+(10,2),
+(10,6);
 
 INSERT INTO public.instrumental_storage (instrument_brand, quantity)
 VALUES
