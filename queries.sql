@@ -75,7 +75,7 @@ SELECT
         WHEN COUNT(student_id) >= CAST(maximum_number_of_spots AS BIGINT) - 2
         AND COUNT(student_id) < CAST(maximum_number_of_spots AS BIGINT) THEN '1 or 2 Seats'
         ELSE 'Many Seats'
-    END AS available_seats
+    END AS "No of Free Seats"
 FROM
     lesson
     LEFT JOIN lesson_student ON lesson.id = lesson_student.lesson_id
