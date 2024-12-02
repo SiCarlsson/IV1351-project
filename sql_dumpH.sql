@@ -32,7 +32,7 @@ CREATE TABLE public.historical_lesson_information (
     instrument character varying(100),
     lesson_price character varying(100) NOT NULL,
     student_name character varying(100) NOT NULL,
-    student_email character varying(100) NOT NULL
+    student_email character varying(100)
 );
 
 

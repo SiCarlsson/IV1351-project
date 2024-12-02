@@ -209,7 +209,7 @@ ALTER SEQUENCE public.contact_person_student_id_seq OWNED BY public.contact_pers
 
 CREATE TABLE public.email (
     id integer NOT NULL,
-    email character varying(100) NOT NULL
+    email character varying(100)
 );
 
 
