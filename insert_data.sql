@@ -154,24 +154,6 @@ VALUES
 	(2,3),
 	(3,2); 
  
-INSERT INTO public.lesson (date, time, duration, instructor_id)
-VALUES
-('2024-10-22', '10:00:00', 60, 1),
-('2024-10-23', '11:30:00', 45, 2),
-('2024-10-24', '09:00:00', 90, 3),
-('2024-10-25', '14:15:00', 30, 1),
-('2024-11-22', '10:00:00', 60, 1),
-('2024-11-23', '11:30:00', 45, 2),
-('2024-11-24', '09:00:00', 90, 3),
-('2024-12-25', '14:15:00', 30, 1),
-('2024-12-02', '16:00:00', 60, 2),
-('2024-12-03', '16:00:00', 60, 2),
-('2024-12-04', '15:00:00', 60, 2),
-('2024-12-08', '15:00:00', 60, 2),
-('2024-11-29', '15:00:00', 60, 2);
-
-
-
 INSERT INTO public.lesson_price_scheme (lesson_type, skill_level, price_per_lesson, price_from_date)
 VALUES
 ('group_lesson', 'Beginner', 200, '2024-11-01'),
@@ -192,6 +174,22 @@ VALUES
 ('individual_lesson', 'Beginner', 550, '2024-11-15'),
 ('individual_lesson', 'Intermediate', 650, '2024-11-15'),
 ('individual_lesson', 'Advanced', 750, '2024-11-15');
+
+INSERT INTO public.lesson (date, time, duration, instructor_id, lesson_price_scheme_id)
+VALUES
+('2024-10-22', '10:00:00', 60, 1,13),
+('2024-10-23', '11:30:00', 45, 2,6),
+('2024-10-24', '09:00:00', 90, 3,2),
+('2024-10-25', '14:15:00', 30, 1,10),
+('2024-11-22', '10:00:00', 60, 1,9),
+('2024-11-23', '11:30:00', 45, 2,8),
+('2024-11-24', '09:00:00', 90, 3,12),
+('2024-12-25', '14:15:00', 30, 1,16),
+('2024-12-09', '16:00:00', 60, 2,15),
+('2024-12-10', '16:00:00', 60, 2,4),
+('2024-12-11', '15:00:00', 60, 2,5),
+('2024-12-15', '15:00:00', 60, 2,3),
+('2024-11-29', '15:00:00', 60, 2,1);
 
 INSERT INTO public.individual_lesson (specific_instrument, lesson_id)
 VALUES
@@ -267,13 +265,6 @@ VALUES
 ('Boss', 20),
 ('Behringer', 9);
 
-INSERT INTO public.instrumental_lease (type_of_instrument, start_date, end_date, student_id, instrumental_storage_id)
-VALUES
-('Guitar', '2024-01-15', '2024-06-15', 4, 2),
-('Piano', '2024-02-01', '2024-08-01', 4, 3),
-('Piano', '2024-03-10', '2024-09-10', 1, 5),
-('Piano', '2024-04-05', '2024-10-05', 2, 7);
-
 INSERT INTO public.instrumental_price_scheme (type_of_instrument,fee_per_month,price_from_date)
 VALUES
 ('Guitar', 150, '2024-01-01'),
@@ -282,6 +273,13 @@ VALUES
 ('Guitar', 160, '2024-07-01'),
 ('Piano', 320, '2024-07-01'),
 ('Drums', 270, '2024-07-01');
+
+INSERT INTO public.instrumental_lease (type_of_instrument, start_date, end_date, student_id, instrumental_storage_id, instrumental_price_scheme_id)
+VALUES
+('Guitar', '2024-01-15', '2024-06-15', 4, 2, 1),
+('Piano', '2024-02-01', '2024-08-01', 4, 3, 3),
+('Piano', '2024-03-10', '2024-09-10', 1, 5, 2),
+('Piano', '2024-04-05', '2024-10-05', 2, 7, 5);
 
 INSERT INTO public.sibling (student_id)
 VALUES

@@ -14,6 +14,8 @@ FROM
     LEFT JOIN group_based_lesson ON lesson.id = group_based_lesson.lesson_id
     LEFT JOIN group_lesson ON group_based_lesson.id = group_lesson.group_based_lesson_id
     LEFT JOIN ensemble ON group_based_lesson.id = ensemble.group_based_lesson_id
+WHERE
+    EXTRACT(YEAR FROM date) = 2024
 GROUP BY month
 ORDER BY month DESC
     
@@ -55,10 +57,15 @@ FROM
     instructor
     LEFT JOIN person ON person_id = person.id
     LEFT JOIN lesson ON instructor.id = instructor_id
+WHERE
+ 	lesson.date >= date_trunc('month', CURRENT_DATE)
+    AND lesson.date < date_trunc('month', CURRENT_DATE) + INTERVAL '1 month'
 GROUP BY
     instructor.id,
     first_name,
     last_name
+HAVING
+	COUNT(lesson.id) >= 3
 ORDER BY
     "No of Lessons" DESC;
 

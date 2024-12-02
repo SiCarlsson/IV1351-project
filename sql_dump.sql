@@ -17,6 +17,19 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
+--
+-- Name: available_spots; Type: VIEW; Schema: public; Owner: postgres
+--
+
+CREATE VIEW public.available_spots AS
+SELECT
+    NULL::text AS day,
+    NULL::character varying(100) AS genre,
+    NULL::text AS "No of Free Seats";
+
+
+ALTER VIEW public.available_spots OWNER TO postgres;
+
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
@@ -633,7 +646,8 @@ CREATE TABLE public.instrumental_lease (
     start_date date,
     end_date date,
     student_id integer NOT NULL,
-    instrumental_storage_id integer NOT NULL
+    instrumental_storage_id integer NOT NULL,
+    instrumental_price_scheme_id integer NOT NULL
 );
 
 
@@ -819,7 +833,8 @@ CREATE TABLE public.lesson (
     date date NOT NULL,
     "time" time(6) without time zone NOT NULL,
     duration character varying(10) NOT NULL,
-    instructor_id integer NOT NULL
+    instructor_id integer NOT NULL,
+    lesson_price_scheme_id integer NOT NULL
 );
 
 
@@ -1917,6 +1932,27 @@ ALTER TABLE ONLY public.type_of_lesson_availability
 
 
 --
+-- Name: available_spots _RETURN; Type: RULE; Schema: public; Owner: postgres
+--
+
+CREATE OR REPLACE VIEW public.available_spots AS
+ SELECT to_char((lesson.date)::timestamp with time zone, 'Dy'::text) AS day,
+    ensemble.genre,
+        CASE
+            WHEN (count(lesson_student.student_id) = (group_based_lesson.maximum_number_of_spots)::bigint) THEN 'No Seats'::text
+            WHEN ((count(lesson_student.student_id) >= ((group_based_lesson.maximum_number_of_spots)::bigint - 2)) AND (count(lesson_student.student_id) < (group_based_lesson.maximum_number_of_spots)::bigint)) THEN '1 or 2 Seats'::text
+            ELSE 'Many Seats'::text
+        END AS "No of Free Seats"
+   FROM (((public.lesson
+     LEFT JOIN public.lesson_student ON ((lesson.id = lesson_student.lesson_id)))
+     LEFT JOIN public.group_based_lesson ON ((lesson.id = group_based_lesson.lesson_id)))
+     LEFT JOIN public.ensemble ON ((group_based_lesson.id = ensemble.group_based_lesson_id)))
+  WHERE ((group_based_lesson.maximum_number_of_spots IS NOT NULL) AND (ensemble.genre IS NOT NULL) AND (lesson.date >= (date_trunc('week'::text, (CURRENT_DATE)::timestamp with time zone) + '7 days'::interval)) AND (lesson.date < (date_trunc('week'::text, (CURRENT_DATE)::timestamp with time zone) + '14 days'::interval)))
+  GROUP BY lesson.id, ensemble.genre, group_based_lesson.maximum_number_of_spots
+  ORDER BY (to_char((lesson.date)::timestamp with time zone, 'Dy'::text)) DESC;
+
+
+--
 -- Name: contact_person_phone contact_person_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2005,6 +2041,14 @@ ALTER TABLE ONLY public.instructor
 
 
 --
+-- Name: instrumental_lease instrumental_lease_instrumental_price_scheme_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.instrumental_lease
+    ADD CONSTRAINT instrumental_lease_instrumental_price_scheme_id_fkey FOREIGN KEY (instrumental_price_scheme_id) REFERENCES public.instrumental_price_scheme(id) NOT VALID;
+
+
+--
 -- Name: instrumental_lease instrumental_storage_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2026,6 +2070,14 @@ ALTER TABLE ONLY public.individual_lesson
 
 ALTER TABLE ONLY public.group_based_lesson
     ADD CONSTRAINT lesson_id FOREIGN KEY (lesson_id) REFERENCES public.lesson(id);
+
+
+--
+-- Name: lesson lesson_lesson_price_scheme_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.lesson
+    ADD CONSTRAINT lesson_lesson_price_scheme_id_fkey FOREIGN KEY (lesson_price_scheme_id) REFERENCES public.lesson_price_scheme(id) NOT VALID;
 
 
 --
