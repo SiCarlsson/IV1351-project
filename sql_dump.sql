@@ -18,17 +18,17 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- Name: available_spots; Type: VIEW; Schema: public; Owner: postgres
+-- Name: available_seats; Type: VIEW; Schema: public; Owner: postgres
 --
 
-CREATE VIEW public.available_spots AS
+CREATE VIEW public.available_seats AS
 SELECT
     NULL::text AS day,
     NULL::character varying(100) AS genre,
     NULL::text AS "No of Free Seats";
 
 
-ALTER VIEW public.available_spots OWNER TO postgres;
+ALTER VIEW public.available_seats OWNER TO postgres;
 
 SET default_tablespace = '';
 
@@ -1932,10 +1932,10 @@ ALTER TABLE ONLY public.type_of_lesson_availability
 
 
 --
--- Name: available_spots _RETURN; Type: RULE; Schema: public; Owner: postgres
+-- Name: available_seats _RETURN; Type: RULE; Schema: public; Owner: postgres
 --
 
-CREATE OR REPLACE VIEW public.available_spots AS
+CREATE OR REPLACE VIEW public.available_seats AS
  SELECT to_char((lesson.date)::timestamp with time zone, 'Dy'::text) AS day,
     ensemble.genre,
         CASE
