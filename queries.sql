@@ -72,6 +72,7 @@ ORDER BY
 --
 -- Query 4
 --
+CREATE VIEW available_seats AS
 SELECT
     TO_CHAR (lesson.date, 'Dy') AS Day,
     genre AS genre,
