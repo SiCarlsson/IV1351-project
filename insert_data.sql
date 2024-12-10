@@ -274,12 +274,16 @@ VALUES
 ('Piano', 320, '2024-07-01'),
 ('Drums', 270, '2024-07-01');
 
-INSERT INTO public.instrumental_lease (type_of_instrument, start_date, end_date, student_id, instrumental_storage_id, instrumental_price_scheme_id)
+INSERT INTO public.instrumental_lease_rules (maximum_number_of_months,maximum_number_of_active_leases,rules_from_date)
 VALUES
-('Guitar', '2024-01-15', '2024-06-15', 4, 2, 1),
-('Piano', '2024-02-01', '2024-08-01', 4, 3, 3),
-('Piano', '2024-03-10', '2024-09-10', 1, 5, 2),
-('Piano', '2024-04-05', '2024-10-05', 2, 7, 5);
+(12, 2, '2024-07-01');
+
+INSERT INTO public.instrumental_lease (type_of_instrument, start_date, end_date, student_id, instrumental_storage_id, instrumental_price_scheme_id, instrumental_lease_rules_id)
+VALUES
+('Guitar', '2024-01-15', '2024-06-15', 4, 2, 1, 1),
+('Piano', '2024-02-01', '2024-08-01', 4, 3, 3, 1),
+('Piano', '2024-03-10', '2024-09-10', 1, 5, 2, 1),
+('Piano', '2024-04-05', '2024-10-05', 2, 7, 5, 1);
 
 INSERT INTO public.sibling (student_id)
 VALUES

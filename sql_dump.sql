@@ -647,7 +647,8 @@ CREATE TABLE public.instrumental_lease (
     end_date date,
     student_id integer NOT NULL,
     instrumental_storage_id integer NOT NULL,
-    instrumental_price_scheme_id integer NOT NULL
+    instrumental_price_scheme_id integer NOT NULL,
+    instrumental_lease_rules_id integer NOT NULL
 );
 
 
@@ -695,6 +696,42 @@ ALTER SEQUENCE public.instrumental_lease_instrumental_storage_id_seq OWNER TO po
 --
 
 ALTER SEQUENCE public.instrumental_lease_instrumental_storage_id_seq OWNED BY public.instrumental_lease.instrumental_storage_id;
+
+
+--
+-- Name: instrumental_lease_rules; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.instrumental_lease_rules (
+    id integer NOT NULL,
+    maximum_number_of_months character varying(100) NOT NULL,
+    maximum_number_of_active_leases character varying(100) NOT NULL,
+    rules_from_date date NOT NULL
+);
+
+
+ALTER TABLE public.instrumental_lease_rules OWNER TO postgres;
+
+--
+-- Name: instrumental_lease_rules_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.instrumental_lease_rules_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.instrumental_lease_rules_id_seq OWNER TO postgres;
+
+--
+-- Name: instrumental_lease_rules_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.instrumental_lease_rules_id_seq OWNED BY public.instrumental_lease_rules.id;
 
 
 --
@@ -1447,6 +1484,13 @@ ALTER TABLE ONLY public.instrumental_lease ALTER COLUMN id SET DEFAULT nextval('
 
 
 --
+-- Name: instrumental_lease_rules id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.instrumental_lease_rules ALTER COLUMN id SET DEFAULT nextval('public.instrumental_lease_rules_id_seq'::regclass);
+
+
+--
 -- Name: instrumental_price_scheme id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1713,6 +1757,14 @@ ALTER TABLE ONLY public.instrumental_lease
 
 ALTER TABLE ONLY public.instrumental_lease
     ADD CONSTRAINT instrumental_lease_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: instrumental_lease_rules instrumental_lease_rules_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.instrumental_lease_rules
+    ADD CONSTRAINT instrumental_lease_rules_pkey PRIMARY KEY (id);
 
 
 --
@@ -2038,6 +2090,14 @@ ALTER TABLE ONLY public.instructor_known_instruments
 
 ALTER TABLE ONLY public.instructor
     ADD CONSTRAINT instructor_person_id_fkey FOREIGN KEY (person_id) REFERENCES public.person(id);
+
+
+--
+-- Name: instrumental_lease instrumental_lease_instrumental_lease_rules_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.instrumental_lease
+    ADD CONSTRAINT instrumental_lease_instrumental_lease_rules_id_fkey FOREIGN KEY (instrumental_lease_rules_id) REFERENCES public.instrumental_lease_rules(id) NOT VALID;
 
 
 --
