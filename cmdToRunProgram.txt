@@ -1,0 +1,5 @@
+I Terminalen (cmd) var i mappen "IV1351-Project"
+
+Kör följande kod:
+javac -d build -cp . $(find Seminar4HigherGradeTasks/se/elhbsc/iv1351/source -name "*.java") && java -cp build Seminar4HigherGradeTasks.se.elhbsc.iv1351.source.startup.Main
+
