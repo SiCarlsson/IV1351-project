@@ -3,7 +3,6 @@ package Seminar4HigherGradeTasks.se.elhbsc.iv1351.source.view;
 import java.util.Scanner;
 
 import Seminar4HigherGradeTasks.se.elhbsc.iv1351.source.controller.Controller;
-import Seminar4HigherGradeTasks.se.elhbsc.iv1351.source.integration.StudentDTO;
 
 public class View {
   private Scanner inputScanner;
