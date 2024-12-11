@@ -1,3 +1,238 @@
+Hampus Berglund
+haampe
+Online
+Simon, Emma
+
+[11:51]Simon: Vad var det där för feedback förresten?
+[11:52]Emma:
+Image
+[11:52]Emma: så har vi nu
+[11:52]Hampus Berglund: Det är Agust
+[11:53]Hampus Berglund: de fick 10/10
+[11:53]Simon: Jahaaa
+[11:53]Simon: Okej
+[11:53]Emma: så som vi gör nu har de gjort liknande och fick 10 för så det borde vara ok
+[12:08]Emma: glömde pulla först så kan inte commita de ändringar som gjorts på databasen
+[12:08]Simon: Om du vet att du inte ändrat något mer
+[12:08]Simon: git push —force
+[12:10]Emma: kanske att det vi gjorde igår försvann men det är lätt fixat vi har ju astahn kvar
+[12:16]Simon: Det med Java?
+[12:17]Emma: Ahh
+[12:17]Simon: Det kan jag nog skicka över isåfall
+[12:17]Emma: Topp!
+[12:17]Simon: Är det borta helt?
+[12:19]Emma: Jag ser bara sql filerna och read me på git
+[12:19]Emma: För det var en ny mapp du skapade igår va?
+[12:27]Simon: Okej, fixar!
+[12:27]Simon: Japp
+[12:27]Simon: Lägg in denna
+[12:28]Simon: Haha verkar inte ha skickats filer också
+[12:28]Simon: Skickar på SMS istället
+[12:28]Emma: gör så haha
+[12:29]Simon: Fick du det?
+[12:29]Simon: Bara att lägga in den mappen i Git mappen
+[12:29]Simon: Så är allt som innan
+[12:31]Emma: nuså funkar allt
+[12:31]Simon: Grymt!
+[13:20]Emma: Börjat på lite queries. PUNKT 1 och 3
+
+        /* Ta fram instrument, behöver ta hänsyn till att kunna lista alla quantity/
+
+SELECT instrumental_lease.type_of_instrument, instrument_brand, fee_per_month
+FROM instrumental_lease
+LEFT JOIN instrumental_storage ON instrumental_storage.id = instrumental_storage_id
+LEFT JOIN instrumental_price_scheme ON instrumental_price_scheme.id = instrumental_price_scheme_id
+ORDER BY type_of_instrument
+
+Borde kunna användas för både punkt 1 och 2 genom att avgränsa med if student_id är null och if student_id är INTE null för att lista uthyrda och lediga instrument. På så sätt borde bara en query behövas.
+
+
+
+PUNKT 2
+
+                    / Ta fram värdena för lease reglerna /
+SELECT maximum_number_of_active_leases, maximum_number_of_months FROM instrumental_lease_rules
+
+        / Ta fram student (namn och id) och exakt uthyrt instrument (typ och id) */
+
+(Om vi vill specificera exakt instrument genom id för instrumentet i storage)
+
+SELECT CONCAT (person.last_name, ', ', person.first_name) AS student_name, student.id, type_of_instrument, instrumental_storage.id 
+FROM student
+LEFT JOIN person ON person.id = person_id
+LEFT JOIN instrumental_lease ON student.id = student_id
+LEFT JOIN instrumental_storage ON instrumental_storage.id = instrumental_storage_id
+[17:39]Emma: sen funderade jag lite på om vi kommer behöva göra om hur vi lagrar instrument för tror att vi nu säger att en student som lånar ett instrument lånar hela quantity av det brandet, alltså hyr en student alla 10 av en sort ex.
+[17:40]Simon: Vi måste ta -1
+[17:40]Simon: Uppdatera värdet det vill säg
+[17:40]Simon: Antar jag?
+[17:40]Simon: Och lämnar man tillbaka +1
+[17:44]Emma: skrev typ exakt så när jag satt förut och skrev ner lite tankar. Men tror problemet är hur vi placerat ändå då ett storage_id är foregin key till en lease
+[17:44]Emma: kanske om man kan ha samma storage_id för flera lease
+[17:44]Simon: Det går att ändra ett värde i befintlig kolumn 
+[17:45]Simon: Har vi totalt antal borde vi väl bara kunna göra en operation på det?
+[17:46]Emma: vi borde kunna gå runt det eller enkelt ändra, vi kan ta det när vi sitter nästa gång
+[17:46]Emma: hojta till om du sitter ikväll efter paddeln
+[18:28]Simon: Yes!
+[00:42]Simon: Har suttit och fixat en del med vår Java-kod till datan nu på kvällen, kommer gå rätt snabbt att få till menyn skulle jag tro
+[00:42]Simon: Allt är pushat till Git så bara att köra en pull och testa
+[00:43]Simon: Instruktioner för hur man kör koden finns i en .txt fil jag lagt tillsammans med alla sql-filer. Borde funka på Windows också men inte helt 100
+[00:44]Simon: Feedback tas tacksamt emot! 😄
+[00:45]Simon: (All felhantering ska funka än så länge men testa gärna)
+[09:16]Emma: Grymt kikar så fort jag kommer till Kista!
+[10:00]Hampus Berglund: Skit bra Simon! Kollar också när jag är framme
+[11:42]Emma: Vi har flyttat price scheme direkt till storage så vi kan koppla pris till outhyrda instrument också inte bara uthyrda
+Image
+[12:10]Simon: Grymt!
+[12:10]Simon: Ni får visa mer sen när jag är i Kista
+[12:39]Emma: SELECT student.id, CONCAT (person.last_name, ', ', person.first_name) AS student_name
+FROM student
+LEFT JOIN person ON person.id = person_id
+[13:43]Emma:
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 17.0
+-- Dumped by pg_dump version 17.0
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET transaction_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- Name: available_seats; Type: VIEW; Schema: public; Owner: postgres
+--
+
+CREATE VIEW public.available_seats AS
+SELECT
+    NULL::text AS day,
+    NULL::character varying(100) AS genre,
+    NULL::text AS "No of Free Seats";
+
+
+ALTER VIEW public.available_seats OWNER TO postgres;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- Name: contact_person; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.contact_person (
+    id integer NOT NULL,
+    relationship character varying(100),
+    student_id integer NOT NULL
+);
+
+
+ALTER TABLE public.contact_person OWNER TO postgres;
+
+--
+-- Name: contact_person_email; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.contact_person_email (
+    contact_person_id integer NOT NULL,
+    email_id integer NOT NULL
+);
+
+
+ALTER TABLE public.contact_person_email OWNER TO postgres;
+
+--
+-- Name: contact_person_email_contact_person_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.contact_person_email_contact_person_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.contact_person_email_contact_person_id_seq OWNER TO postgres;
+
+--
+-- Name: contact_person_email_contact_person_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.contact_person_email_contact_person_id_seq OWNED BY public.contact_person_email.contact_person_id;
+
+
+--
+-- Name: contact_person_email_email_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.contact_person_email_email_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.contact_person_email_email_id_seq OWNER TO postgres;
+
+--
+-- Name: contact_person_email_email_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres... (8 KB left)
+Collapse
+message.txt
+58 KB
+[13:43]Emma:
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 17.0
+-- Dumped by pg_dump version 17.0... (8 KB left)
+Expand
+dump2.sql
+58 KB
+[13:43]Emma:
+INSERT INTO public.person (first_name,last_name,social_security_number,street_name,city,zip_code)
+VALUES
+-- students
+  ('Glenna','Ward',451263943466,'Ap #811-686 Fermentum St.','Gävle','03385'),
+  ('Kyra','Morrison',654426128616,'425-9573 At Ave','Linköping','31662'),
+  ('Nigel','Duffy',507918322794,'Ap #389-567 A, Rd.','Trollhättan','03822'),
+Expand
+message.txt
+8 KB
+[13:45]Emma:
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 17.0
+-- Dumped by pg_dump version 17.0... (8 KB left)
+Expand
+dump2.sql
+58 KB
+[14:04]Emma:
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 17.0
+-- Dumped by pg_dump version 17.0... (8 KB left)
+Expand
+dump3.sql
+58 KB
+﻿
 --
 -- PostgreSQL database dump
 --
@@ -642,12 +877,10 @@ ALTER SEQUENCE public.instructor_type_of_lesson_availability_instructor_id_seq O
 
 CREATE TABLE public.instrumental_lease (
     id integer NOT NULL,
-    type_of_instrument character varying(100),
     start_date date,
     end_date date,
     student_id integer NOT NULL,
     instrumental_storage_id integer NOT NULL,
-    instrumental_price_scheme_id integer NOT NULL,
     instrumental_lease_rules_id integer NOT NULL
 );
 
@@ -762,7 +995,6 @@ ALTER SEQUENCE public.instrumental_lease_student_id_seq OWNED BY public.instrume
 
 CREATE TABLE public.instrumental_price_scheme (
     id integer NOT NULL,
-    type_of_instrument character varying(100) NOT NULL,
     fee_per_month character varying(100) NOT NULL,
     price_from_date date NOT NULL
 );
@@ -799,7 +1031,9 @@ ALTER SEQUENCE public.instrumental_price_scheme_id_seq OWNED BY public.instrumen
 CREATE TABLE public.instrumental_storage (
     id integer NOT NULL,
     instrument_brand character varying(100) NOT NULL,
-    quantity character varying(100) NOT NULL
+    quantity character varying(100) NOT NULL,
+    type_of_instrument character varying(100) NOT NULL,
+    instrumental_price_scheme_id integer NOT NULL
 );
 
 
@@ -2024,235 +2258,4 @@ ALTER TABLE ONLY public.contact_person_email
 -- Name: contact_person_email email_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.contact_person_email
-    ADD CONSTRAINT email_id FOREIGN KEY (email_id) REFERENCES public.email(id);
-
-
---
--- Name: person_email email_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.person_email
-    ADD CONSTRAINT email_id FOREIGN KEY (email_id) REFERENCES public.email(id);
-
-
---
--- Name: ensemble group_based_lesson_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.ensemble
-    ADD CONSTRAINT group_based_lesson_id FOREIGN KEY (group_based_lesson_id) REFERENCES public.group_based_lesson(id);
-
-
---
--- Name: group_lesson group_based_lesson_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.group_lesson
-    ADD CONSTRAINT group_based_lesson_id FOREIGN KEY (group_based_lesson_id) REFERENCES public.group_based_lesson(id);
-
-
---
--- Name: lesson instructor_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.lesson
-    ADD CONSTRAINT instructor_id FOREIGN KEY (instructor_id) REFERENCES public.instructor(id);
-
-
---
--- Name: instructor_type_of_lesson_availability instructor_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.instructor_type_of_lesson_availability
-    ADD CONSTRAINT instructor_id FOREIGN KEY (instructor_id) REFERENCES public.instructor(id);
-
-
---
--- Name: instructor_known_instruments instructor_known_instruments_instructor_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.instructor_known_instruments
-    ADD CONSTRAINT instructor_known_instruments_instructor_id_fkey FOREIGN KEY (instructor_id) REFERENCES public.instructor(id);
-
-
---
--- Name: instructor_known_instruments instructor_known_instruments_known_instruments_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.instructor_known_instruments
-    ADD CONSTRAINT instructor_known_instruments_known_instruments_id_fkey FOREIGN KEY (known_instruments_id) REFERENCES public.known_instruments(id);
-
-
---
--- Name: instructor instructor_person_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.instructor
-    ADD CONSTRAINT instructor_person_id_fkey FOREIGN KEY (person_id) REFERENCES public.person(id);
-
-
---
--- Name: instrumental_lease instrumental_lease_instrumental_lease_rules_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.instrumental_lease
-    ADD CONSTRAINT instrumental_lease_instrumental_lease_rules_id_fkey FOREIGN KEY (instrumental_lease_rules_id) REFERENCES public.instrumental_lease_rules(id) NOT VALID;
-
-
---
--- Name: instrumental_lease instrumental_lease_instrumental_price_scheme_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.instrumental_lease
-    ADD CONSTRAINT instrumental_lease_instrumental_price_scheme_id_fkey FOREIGN KEY (instrumental_price_scheme_id) REFERENCES public.instrumental_price_scheme(id) NOT VALID;
-
-
---
--- Name: instrumental_lease instrumental_storage_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.instrumental_lease
-    ADD CONSTRAINT instrumental_storage_id FOREIGN KEY (instrumental_storage_id) REFERENCES public.instrumental_storage(id) NOT VALID;
-
-
---
--- Name: individual_lesson lesson_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.individual_lesson
-    ADD CONSTRAINT lesson_id FOREIGN KEY (lesson_id) REFERENCES public.lesson(id);
-
-
---
--- Name: group_based_lesson lesson_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.group_based_lesson
-    ADD CONSTRAINT lesson_id FOREIGN KEY (lesson_id) REFERENCES public.lesson(id);
-
-
---
--- Name: lesson lesson_lesson_price_scheme_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.lesson
-    ADD CONSTRAINT lesson_lesson_price_scheme_id_fkey FOREIGN KEY (lesson_price_scheme_id) REFERENCES public.lesson_price_scheme(id) NOT VALID;
-
-
---
--- Name: lesson_student lesson_student_lesson_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.lesson_student
-    ADD CONSTRAINT lesson_student_lesson_id_fkey FOREIGN KEY (lesson_id) REFERENCES public.lesson(id) NOT VALID;
-
-
---
--- Name: lesson_student lesson_student_student_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.lesson_student
-    ADD CONSTRAINT lesson_student_student_id_fkey FOREIGN KEY (student_id) REFERENCES public.student(id) NOT VALID;
-
-
---
--- Name: person_phone person_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.person_phone
-    ADD CONSTRAINT person_id FOREIGN KEY (person_id) REFERENCES public.person(id);
-
-
---
--- Name: person_email person_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.person_email
-    ADD CONSTRAINT person_id FOREIGN KEY (person_id) REFERENCES public.person(id);
-
-
---
--- Name: contact_person_phone phone_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.contact_person_phone
-    ADD CONSTRAINT phone_id FOREIGN KEY (phone_id) REFERENCES public.phone(id);
-
-
---
--- Name: person_phone phone_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.person_phone
-    ADD CONSTRAINT phone_id FOREIGN KEY (phone_id) REFERENCES public.phone(id);
-
-
---
--- Name: student_sibling sibling_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.student_sibling
-    ADD CONSTRAINT sibling_id FOREIGN KEY (sibling_id) REFERENCES public.sibling(id);
-
-
---
--- Name: student_skill_level skill_level_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.student_skill_level
-    ADD CONSTRAINT skill_level_id FOREIGN KEY (skill_level_id) REFERENCES public.skill_level(id);
-
-
---
--- Name: instrumental_lease student_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.instrumental_lease
-    ADD CONSTRAINT student_id FOREIGN KEY (student_id) REFERENCES public.student(id);
-
-
---
--- Name: contact_person student_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.contact_person
-    ADD CONSTRAINT student_id FOREIGN KEY (student_id) REFERENCES public.student(id);
-
-
---
--- Name: student_skill_level student_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.student_skill_level
-    ADD CONSTRAINT student_id FOREIGN KEY (student_id) REFERENCES public.student(id);
-
-
---
--- Name: student_sibling student_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.student_sibling
-    ADD CONSTRAINT student_id FOREIGN KEY (student_id) REFERENCES public.student(id);
-
-
---
--- Name: student student_person_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.student
-    ADD CONSTRAINT student_person_id_fkey FOREIGN KEY (person_id) REFERENCES public.person(id);
-
-
---
--- Name: instructor_type_of_lesson_availability type_of_lesson_availability_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.instructor_type_of_lesson_availability
-    ADD CONSTRAINT type_of_lesson_availability_id FOREIGN KEY (type_of_lesson_availability_id) REFERENCES public.type_of_lesson_availability(id);
-
-
---
--- PostgreSQL database dump complete
---
-
+ALTER T... (8 KB left)

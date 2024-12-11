@@ -1,0 +1,20 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Main",
+            "request": "launch",
+            "mainClass": "Seminar4HigherGradeTasks.se.elhbsc.iv1351.source.startup.Main",
+            "projectName": "IV1351-project_daf35a97"
+        },
+        {
+            "type": "java",
+            "request": "launch",
+            "name": "Launch Main",
+            "mainClass": "Seminar4HigherGradeTasks.se.elhbsc.iv1351.source.startup.Main",
+            "projectName": "IV1351-project",
+            "vmArgs": "-cp \"C:\\Users\\hampu\\Documents\\GitHub\\IV1351-project\\lib\\postgresql-42.7.4.jar;C:\\Users\\hampu\\Documents\\GitHub\\IV1351-project\\build\""
+        }
+    ]
+}

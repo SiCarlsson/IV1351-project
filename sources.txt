@@ -1,0 +1,12 @@
+C:\Users\hampu\Documents\GitHub\IV1351-project\Seminar4HigherGradeTasks\se\elhbsc\iv1351\source\controller\Controller.java
+C:\Users\hampu\Documents\GitHub\IV1351-project\Seminar4HigherGradeTasks\se\elhbsc\iv1351\source\integration\ExternalDatabaseSystem.java
+C:\Users\hampu\Documents\GitHub\IV1351-project\Seminar4HigherGradeTasks\se\elhbsc\iv1351\source\integration\InstrumentDAO.java
+C:\Users\hampu\Documents\GitHub\IV1351-project\Seminar4HigherGradeTasks\se\elhbsc\iv1351\source\integration\StudentDTO.java
+C:\Users\hampu\Documents\GitHub\IV1351-project\Seminar4HigherGradeTasks\se\elhbsc\iv1351\source\model\CountStudents.java
+C:\Users\hampu\Documents\GitHub\IV1351-project\Seminar4HigherGradeTasks\se\elhbsc\iv1351\source\model\DatabaseConnection.java
+C:\Users\hampu\Documents\GitHub\IV1351-project\Seminar4HigherGradeTasks\se\elhbsc\iv1351\source\model\Instrument.java
+C:\Users\hampu\Documents\GitHub\IV1351-project\Seminar4HigherGradeTasks\se\elhbsc\iv1351\source\model\InstrumentDTO.java
+C:\Users\hampu\Documents\GitHub\IV1351-project\Seminar4HigherGradeTasks\se\elhbsc\iv1351\source\model\Rental.java
+C:\Users\hampu\Documents\GitHub\IV1351-project\Seminar4HigherGradeTasks\se\elhbsc\iv1351\source\model\Student.java
+C:\Users\hampu\Documents\GitHub\IV1351-project\Seminar4HigherGradeTasks\se\elhbsc\iv1351\source\startup\Main.java
+C:\Users\hampu\Documents\GitHub\IV1351-project\Seminar4HigherGradeTasks\se\elhbsc\iv1351\source\view\View.java
