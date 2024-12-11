@@ -70,6 +70,10 @@ public class View {
           loggedInMenu(inputInteger);
           break;
         }
+        else if (inputInteger == 0) {
+          clearTerminal();
+          break;
+        }
         else {
           clearTerminal();
           System.err.println("You must chose an integer greater than 0 (>0)\n");
