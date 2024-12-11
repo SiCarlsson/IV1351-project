@@ -4,12 +4,14 @@ import java.util.List;
 
 import se.elhbsc.iv1351.integration.ExternalDatabaseSystemDAO;
 import se.elhbsc.iv1351.model.InstrumentDTO;
+import se.elhbsc.iv1351.model.Rental;
 import se.elhbsc.iv1351.model.Student;
 import se.elhbsc.iv1351.model.StudentDTO;
 
 public class Controller {
   private Student student;
   private ExternalDatabaseSystemDAO dbSystem;
+  private Rental rental;
 
   /**
    * Constructor
@@ -19,6 +21,7 @@ public class Controller {
   public Controller(ExternalDatabaseSystemDAO externalDatabaseSystemDAO) {
     this.student = null;
     this.dbSystem = externalDatabaseSystemDAO;
+    this.rental = new Rental(dbSystem.findRentalLimits());
   }
 
   /**
@@ -37,10 +40,18 @@ public class Controller {
   /**
    * Collects all instruments from the database and returns it to view
    * 
-   * @return A list of all available instrumentDTOs 
+   * @return A list of all available instrumentDTOs
    */
   public List<InstrumentDTO> retrieveAllAvailableInstruments() {
-     return this.dbSystem.findAllAvailableInstruments();
+    return this.dbSystem.findAllAvailableInstruments();
+  }
+
+  public boolean checkEligibleForRental() {
+    if (this.student.eligibleForRental(this.rental.getMaximumActiveLeases())) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   public Student getStudent() {
@@ -50,5 +61,4 @@ public class Controller {
   public void setStudentNull() {
     this.student = null;
   }
-
 }

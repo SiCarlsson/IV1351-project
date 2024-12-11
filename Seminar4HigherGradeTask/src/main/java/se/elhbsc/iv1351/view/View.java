@@ -120,16 +120,16 @@ public class View {
 			displayMenuOptions(alternatives);
 			String input = this.inputScanner.nextLine();
 
+			clearTerminal();
 			switch (input) {
 				case "1":
-					clearTerminal();
 					listAllAvailableInstruments();
 					promptEnterToContinue();
 					clearTerminal();
 					break;
 				case "2":
-					clearTerminal();
 					rentAnInstrument();
+					clearTerminal();
 					break;
 				case "3":
 					clearTerminal();
@@ -147,6 +147,7 @@ public class View {
 					clearTerminal();
 					defaultMenuErrorMessage();
 			}
+			
 		}
 	}
 
@@ -171,22 +172,24 @@ public class View {
 	}
 
 	private void rentAnInstrument() {
-		
-
-
-
-
+		if (contr.checkEligibleForRental()) {
+			// VALID FOR RETAL
+			System.out.println("IMPLEMENT FUNCTIONALITY HERE");
+			String inputString = this.inputScanner.nextLine();
+		} else {
+			System.err.println(contr.getStudent().getName()
+					+ ", you already have the maximum amount of active rentals.\nFeel free to terminate a rental in order to rent a new instrument!");
+			promptEnterToContinue();
+		}
 
 		// listAllAvailableInstruments();
 		// System.out.println("\nChoose an instrument by selecting a valid ID\n");
 
-		// String inputString = this.inputScanner.nextLine();
-
 		// int inputInteger = 0;
 		// try {
-		// 	inputInteger = Integer.parseInt(inputString);
+		// inputInteger = Integer.parseInt(inputString);
 		// } catch (Exception e) {
-		// 	// TODO: handle exception
+		//
 		// }
 
 	}

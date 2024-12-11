@@ -3,6 +3,7 @@ package se.elhbsc.iv1351.model;
 public class Student {
   private String name;
   private int studentId;
+  private int activeRentals;
 
   /**
    * Constructor
@@ -12,6 +13,15 @@ public class Student {
   public Student(StudentDTO studentDTO) {
     this.name = studentDTO.getName();
     this.studentId = studentDTO.getStudentId();
+    this.activeRentals = studentDTO.getActiveRentals();
+  }
+
+  public boolean eligibleForRental(int maximumCurrentRentals) {
+    if (this.activeRentals < maximumCurrentRentals) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   /**
@@ -30,5 +40,14 @@ public class Student {
    */
   public int getStudentId() {
     return this.studentId;
+  }
+
+  /**
+   * Get function to retrieve the active rentals
+   * 
+   * @return objects active rental amount
+   */
+  public int getActiveRentals() {
+    return this.activeRentals;
   }
 }

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import se.elhbsc.iv1351.model.InstrumentDTO;
+import se.elhbsc.iv1351.model.RentalDTO;
 import se.elhbsc.iv1351.model.StudentDTO;
 
 public class ExternalDatabaseSystemDAO {
@@ -19,6 +20,7 @@ public class ExternalDatabaseSystemDAO {
   private Connection connection;
   private PreparedStatement findStudentWithId;
   private PreparedStatement findAllAvailableInstruments;
+  private PreparedStatement findRentalLimits;
 
   public ExternalDatabaseSystemDAO() {
     try {
@@ -49,16 +51,16 @@ public class ExternalDatabaseSystemDAO {
    * @throws SQLException If not possible to commit
    */
   // private void commit() throws SQLException {
-  //   try {
-  //     this.connection.commit();
-  //   } catch (SQLException e) {
-  //     throw new SQLException("Could not commit");
-  //   }
+  // try {
+  // this.connection.commit();
+  // } catch (SQLException e) {
+  // throw new SQLException("Could not commit");
+  // }
   // }
 
   public StudentDTO findStudentWithId(int studentId) {
     ResultSet resultSet = null;
-    StudentDTO fetchedStudent = new StudentDTO("", 0);
+    StudentDTO fetchedStudent = new StudentDTO("", 0, 0);
 
     try {
       findStudentWithId.setInt(1, studentId);
@@ -68,7 +70,8 @@ public class ExternalDatabaseSystemDAO {
       if (resultSet.next()) {
         int id = resultSet.getInt("id");
         String studentName = resultSet.getString("student_name");
-        fetchedStudent = new StudentDTO(studentName, id);
+        int activeLeases = resultSet.getInt("lease_count");
+        fetchedStudent = new StudentDTO(studentName, id, activeLeases);
       }
     } catch (SQLException e) {
       e.printStackTrace();
@@ -101,18 +104,43 @@ public class ExternalDatabaseSystemDAO {
         instruments.add(new InstrumentDTO(instrumentType, instrumentBrand, instrumentPrice, instrumentId));
       }
     } catch (SQLException e) {
-      // Log error (use your preferred logging framework, e.g., SLF4J)
       System.err.println("Error fetching available instruments: " + e.getMessage());
     }
     return instruments;
   }
 
-  public void prepareStatements() throws SQLException {
+  /**
+   * Method fetches the rental limits from the database
+   * 
+   * @return a rental DTO with the limits
+   */
+  public RentalDTO findRentalLimits() {
+    ResultSet resultSet = null;
+
+    try {
+      resultSet = findRentalLimits.executeQuery();
+      if (resultSet.next()) {
+        int maximumActiveLeases = Integer.parseInt(resultSet.getString("maximum_number_of_active_leases"));
+        int maximumRentalMonths = Integer.parseInt(resultSet.getString("maximum_number_of_months"));
+        return new RentalDTO(maximumActiveLeases, maximumRentalMonths);
+      }
+    } catch (SQLException e) {
+      System.err.println("Could not fetch rental limits: " + e.getMessage());
+    }
+
+    return null;
+  }
+
+  private void prepareStatements() throws SQLException {
     findStudentWithId = this.connection
         .prepareStatement(
-            "SELECT student.id, CONCAT (person.first_name, ' ', person.last_name) AS student_name FROM student LEFT JOIN person ON person.id = person_id WHERE student.id = ?");
+            "SELECT student.id, CONCAT(person.first_name, ' ', person.last_name) AS student_name, COUNT(instrumental_lease.id) AS lease_count FROM public.student LEFT JOIN public.person ON person.id = student.person_id LEFT JOIN public.instrumental_lease ON student.id = instrumental_lease.student_id AND instrumental_lease.start_date >= NOW() - INTERVAL '1 year' WHERE student.id = ? GROUP BY student.id, person.last_name, person.first_name");
 
     findAllAvailableInstruments = this.connection
-        .prepareStatement("SELECT instrumental_storage.id, type_of_instrument, instrument_brand, fee_per_month FROM instrumental_storage LEFT JOIN instrumental_price_scheme ON instrumental_price_scheme.id = instrumental_price_scheme_id LEFT JOIN instrumental_lease ON instrumental_storage.id = instrumental_storage_id WHERE student_id IS NULL ORDER BY type_of_instrument");
+        .prepareStatement(
+            "SELECT instrumental_storage.id, type_of_instrument, instrument_brand, fee_per_month FROM instrumental_storage LEFT JOIN instrumental_price_scheme ON instrumental_price_scheme.id = instrumental_price_scheme_id LEFT JOIN instrumental_lease ON instrumental_storage.id = instrumental_storage_id WHERE student_id IS NULL ORDER BY type_of_instrument");
+
+    findRentalLimits = this.connection.prepareStatement(
+        "SELECT maximum_number_of_active_leases, maximum_number_of_months FROM instrumental_lease_rules");
   }
 }
