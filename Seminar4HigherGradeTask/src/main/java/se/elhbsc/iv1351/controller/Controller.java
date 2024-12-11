@@ -34,6 +34,7 @@ public class Controller {
 
     if (placeholderStudentDTO.getStudentId() > 0 && placeholderStudentDTO.getName() != "") {
       this.student = new Student(placeholderStudentDTO);
+      this.student.setActiveRentals(this.dbSystem.findActiveLeasesByStudentId(studentId));
     }
   }
 
@@ -46,6 +47,10 @@ public class Controller {
     return this.dbSystem.findAllAvailableInstruments();
   }
 
+  /**
+   * Verifies that a user is eligible for more rentals
+   * @return True if the user is allowed to rent another instrument, else false
+   */
   public boolean checkEligibleForRental() {
     if (this.student.eligibleForRental(this.rental.getMaximumActiveLeases())) {
       return true;
@@ -54,10 +59,17 @@ public class Controller {
     }
   }
 
+  /**
+   * Getter function to retrieve the logged in user
+   * @return Currently logged in user
+   */
   public Student getStudent() {
     return this.student;
   }
 
+  /**
+   * Setter function to nullify the logged in user (log out)
+   */
   public void setStudentNull() {
     this.student = null;
   }

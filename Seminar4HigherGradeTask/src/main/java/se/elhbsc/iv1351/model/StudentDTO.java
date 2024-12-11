@@ -3,12 +3,16 @@ package se.elhbsc.iv1351.model;
 public class StudentDTO {
   private String name;
   private int studentId;
-  private int activeRentals;
 
-  public StudentDTO(String name, int studentId, int activeRentals) {
+  /**
+   * Constructor
+   * 
+   * @param name Name of the current student
+   * @param studentId Id of the current student
+   */
+  public StudentDTO(String name, int studentId) {
     this.name = name;
     this.studentId = studentId;
-    this.activeRentals = activeRentals;
   }
 
   /**
@@ -27,14 +31,5 @@ public class StudentDTO {
    */
   public int getStudentId() {
     return this.studentId;
-  }
-
-  /**
-   * Get function to retrieve the active rentals
-   * 
-   * @return objects active rental amount
-   */
-  public int getActiveRentals() {
-    return this.activeRentals;
   }
 }

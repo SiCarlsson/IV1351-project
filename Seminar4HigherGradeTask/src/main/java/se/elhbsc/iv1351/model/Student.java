@@ -13,9 +13,14 @@ public class Student {
   public Student(StudentDTO studentDTO) {
     this.name = studentDTO.getName();
     this.studentId = studentDTO.getStudentId();
-    this.activeRentals = studentDTO.getActiveRentals();
   }
 
+  /**
+   * Check if the user has too many rentals or not
+   * 
+   * @param maximumCurrentRentals Maximum allowed rentals
+   * @return True if eligible for more rentals, else false
+   */
   public boolean eligibleForRental(int maximumCurrentRentals) {
     if (this.activeRentals < maximumCurrentRentals) {
       return true;
@@ -49,5 +54,14 @@ public class Student {
    */
   public int getActiveRentals() {
     return this.activeRentals;
+  }
+
+  /**
+   * Setter method to specify active rentals
+   * 
+   * @param activeRentals Number of currrently active rentals
+   */
+  public void setActiveRentals(int activeRentals) {
+    this.activeRentals = activeRentals;
   }
 }

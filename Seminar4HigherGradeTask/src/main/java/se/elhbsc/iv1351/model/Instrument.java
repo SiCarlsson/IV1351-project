@@ -6,6 +6,14 @@ public class Instrument {
   private String price;
   private int instrumentId;
 
+  /**
+   * Constructor
+   * 
+   * @param type         Type of instrument
+   * @param brand        Brand of instrument
+   * @param price        Price per month of instrument
+   * @param instrumentId Id of instrument
+   */
   public Instrument(InstrumentDTO instrumentDTO) {
     this.type = instrumentDTO.getType();
     this.brand = instrumentDTO.getBrand();

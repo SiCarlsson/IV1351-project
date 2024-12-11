@@ -73,7 +73,6 @@ public class View {
 	/**
 	 * Holds the logic of logging in a specific student
 	 * 
-	 * @throws Exception
 	 */
 	private void logInStudent() {
 		clearTerminal();
@@ -147,7 +146,7 @@ public class View {
 					clearTerminal();
 					defaultMenuErrorMessage();
 			}
-			
+
 		}
 	}
 
@@ -175,6 +174,7 @@ public class View {
 		if (contr.checkEligibleForRental()) {
 			// VALID FOR RETAL
 			System.out.println("IMPLEMENT FUNCTIONALITY HERE");
+			System.out.println("CURRENT ACTIVE LEASES: " + this.contr.getStudent().getActiveRentals());
 			String inputString = this.inputScanner.nextLine();
 		} else {
 			System.err.println(contr.getStudent().getName()

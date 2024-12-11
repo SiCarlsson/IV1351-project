@@ -4,9 +4,6 @@ import se.elhbsc.iv1351.controller.Controller;
 import se.elhbsc.iv1351.integration.ExternalDatabaseSystemDAO;
 import se.elhbsc.iv1351.view.View;
 
-/**
- * Hello world!
- */
 public class Main {
 	public static void main(String[] args) {
 		ExternalDatabaseSystemDAO dbSystem = new ExternalDatabaseSystemDAO();

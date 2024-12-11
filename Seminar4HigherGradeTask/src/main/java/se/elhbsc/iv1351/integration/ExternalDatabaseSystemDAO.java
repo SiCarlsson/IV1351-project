@@ -21,7 +21,11 @@ public class ExternalDatabaseSystemDAO {
   private PreparedStatement findStudentWithId;
   private PreparedStatement findAllAvailableInstruments;
   private PreparedStatement findRentalLimits;
+  private PreparedStatement findActiveLeasesByStudentId;
 
+  /**
+   * Constructor
+   */
   public ExternalDatabaseSystemDAO() {
     try {
       createDatabaseConnection();
@@ -31,6 +35,12 @@ public class ExternalDatabaseSystemDAO {
     }
   }
 
+  /**
+   * Establishes the database connection
+   * 
+   * @throws SQLException           If there occurs an error with SQL
+   * @throws ClassNotFoundException If the required driver is not found
+   */
   private void createDatabaseConnection() throws SQLException, ClassNotFoundException {
     try {
       Class.forName("org.postgresql.Driver");
@@ -48,19 +58,25 @@ public class ExternalDatabaseSystemDAO {
   /**
    * Method to commit the database
    * 
-   * @throws SQLException If not possible to commit
+   * @throws SQLException If not possible to commit / problem with SQL
    */
-  // private void commit() throws SQLException {
-  // try {
-  // this.connection.commit();
-  // } catch (SQLException e) {
-  // throw new SQLException("Could not commit");
-  // }
-  // }
+  private void commit() throws SQLException {
+    try {
+      this.connection.commit();
+    } catch (SQLException e) {
+      throw new SQLException("Could not commit");
+    }
+  }
 
+  /**
+   * Fetches student based on id
+   * 
+   * @param studentId the Id given by the user to log in
+   * @return A studentDTO of the applicable user
+   */
   public StudentDTO findStudentWithId(int studentId) {
     ResultSet resultSet = null;
-    StudentDTO fetchedStudent = new StudentDTO("", 0, 0);
+    StudentDTO fetchedStudent = new StudentDTO("", 0);
 
     try {
       findStudentWithId.setInt(1, studentId);
@@ -70,8 +86,7 @@ public class ExternalDatabaseSystemDAO {
       if (resultSet.next()) {
         int id = resultSet.getInt("id");
         String studentName = resultSet.getString("student_name");
-        int activeLeases = resultSet.getInt("lease_count");
-        fetchedStudent = new StudentDTO(studentName, id, activeLeases);
+        fetchedStudent = new StudentDTO(studentName, id);
       }
     } catch (SQLException e) {
       e.printStackTrace();
@@ -131,10 +146,36 @@ public class ExternalDatabaseSystemDAO {
     return null;
   }
 
+  /**
+   * Fetches all active leases give a student id
+   * 
+   * @param studentId the student id of the logged in student
+   * @return the number of active current leases
+   */
+  public int findActiveLeasesByStudentId(int studentId) {
+    ResultSet resultSet = null;
+
+    try {
+      findActiveLeasesByStudentId.setInt(1, studentId);
+      resultSet = findActiveLeasesByStudentId.executeQuery();
+
+      if (resultSet.next()) {
+        return resultSet.getInt("lease_count");
+      }
+    } catch (Exception e) {
+      System.err.println("Could not fetch all active leases: " + e.getMessage());
+    }
+    return 0;
+  }
+
+  /**
+   * 
+   * @throws SQLException
+   */
   private void prepareStatements() throws SQLException {
     findStudentWithId = this.connection
         .prepareStatement(
-            "SELECT student.id, CONCAT(person.first_name, ' ', person.last_name) AS student_name, COUNT(instrumental_lease.id) AS lease_count FROM public.student LEFT JOIN public.person ON person.id = student.person_id LEFT JOIN public.instrumental_lease ON student.id = instrumental_lease.student_id AND instrumental_lease.start_date >= NOW() - INTERVAL '1 year' WHERE student.id = ? GROUP BY student.id, person.last_name, person.first_name");
+            "SELECT student.id, CONCAT (person.first_name, ' ', person.last_name) AS student_name FROM student LEFT JOIN person ON person.id = person_id WHERE student.id = ?");
 
     findAllAvailableInstruments = this.connection
         .prepareStatement(
@@ -142,5 +183,8 @@ public class ExternalDatabaseSystemDAO {
 
     findRentalLimits = this.connection.prepareStatement(
         "SELECT maximum_number_of_active_leases, maximum_number_of_months FROM instrumental_lease_rules");
+
+    findActiveLeasesByStudentId = this.connection.prepareStatement(
+        "SELECT student.id, COUNT(instrumental_lease.id) AS lease_count FROM public.student LEFT JOIN public.person ON person.id = student.person_id LEFT JOIN public.instrumental_lease ON student.id = instrumental_lease.student_id AND instrumental_lease.end_date > NOW() WHERE student_id = ? GROUP BY student.id");
   }
 }
