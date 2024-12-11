@@ -252,38 +252,38 @@ VALUES
 (10,2),
 (10,6);
 
-INSERT INTO public.instrumental_storage (instrument_brand, quantity)
+INSERT INTO public.instrumental_price_scheme (fee_per_month,price_from_date)
 VALUES
-('Yamaha', 15),
-('Fender', 7),
-('Gibson', 3),
-('Roland', 10),
-('Korg', 8),
-('Casio', 12),
-('Ibanez', 5),
-('Pearl', 6),
-('Boss', 20),
-('Behringer', 9);
+(150, '2024-01-01'),
+(300, '2024-01-01'),
+(250, '2024-01-01'),
+(160, '2024-07-01'),
+(320, '2024-07-01'),
+(270, '2024-07-01');
 
-INSERT INTO public.instrumental_price_scheme (type_of_instrument,fee_per_month,price_from_date)
+INSERT INTO public.instrumental_storage (instrument_brand, type_of_instrument, instrumental_price_scheme_id)
 VALUES
-('Guitar', 150, '2024-01-01'),
-('Piano', 300, '2024-01-01'),
-('Drums', 250, '2024-01-01'),
-('Guitar', 160, '2024-07-01'),
-('Piano', 320, '2024-07-01'),
-('Drums', 270, '2024-07-01');
+('Yamaha', 'Piano', 2),
+('Fender', 'Guitar', 1),
+('Gibson', 'Guitar', 1),
+('Roland', 'Piano', 2),
+('Korg', 'Drums', 3),
+('Casio', 'Drums', 3),
+('Ibanez', 'Piano', 5),
+('Pearl', 'Guitar', 4),
+('Boss', 'Guitar', 4),
+('Behringer', 'Drums', 6);
 
 INSERT INTO public.instrumental_lease_rules (maximum_number_of_months,maximum_number_of_active_leases,rules_from_date)
 VALUES
 (12, 2, '2024-07-01');
 
-INSERT INTO public.instrumental_lease (type_of_instrument, start_date, end_date, student_id, instrumental_storage_id, instrumental_price_scheme_id, instrumental_lease_rules_id)
+INSERT INTO public.instrumental_lease (start_date, end_date, student_id, instrumental_storage_id, instrumental_lease_rules_id)
 VALUES
-('Guitar', '2024-01-15', '2024-06-15', 4, 2, 1, 1),
-('Piano', '2024-02-01', '2024-08-01', 4, 3, 3, 1),
-('Piano', '2024-03-10', '2024-09-10', 1, 5, 2, 1),
-('Piano', '2024-04-05', '2024-10-05', 2, 7, 5, 1);
+('2024-01-15', '2024-06-15', 4, 2, 1),
+('2024-02-01', '2024-08-01', 4, 3, 1),
+('2024-03-10', '2024-09-10', 1, 5, 1),
+('2024-04-05', '2024-10-05', 2, 7, 1);
 
 INSERT INTO public.sibling (student_id)
 VALUES

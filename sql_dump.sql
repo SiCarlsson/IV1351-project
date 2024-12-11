@@ -642,12 +642,10 @@ ALTER SEQUENCE public.instructor_type_of_lesson_availability_instructor_id_seq O
 
 CREATE TABLE public.instrumental_lease (
     id integer NOT NULL,
-    type_of_instrument character varying(100),
     start_date date,
     end_date date,
     student_id integer NOT NULL,
     instrumental_storage_id integer NOT NULL,
-    instrumental_price_scheme_id integer NOT NULL,
     instrumental_lease_rules_id integer NOT NULL
 );
 
@@ -762,7 +760,6 @@ ALTER SEQUENCE public.instrumental_lease_student_id_seq OWNED BY public.instrume
 
 CREATE TABLE public.instrumental_price_scheme (
     id integer NOT NULL,
-    type_of_instrument character varying(100) NOT NULL,
     fee_per_month character varying(100) NOT NULL,
     price_from_date date NOT NULL
 );
@@ -799,7 +796,8 @@ ALTER SEQUENCE public.instrumental_price_scheme_id_seq OWNED BY public.instrumen
 CREATE TABLE public.instrumental_storage (
     id integer NOT NULL,
     instrument_brand character varying(100) NOT NULL,
-    quantity character varying(100) NOT NULL
+    type_of_instrument character varying(100) NOT NULL,
+    instrumental_price_scheme_id integer NOT NULL
 );
 
 
@@ -2101,19 +2099,19 @@ ALTER TABLE ONLY public.instrumental_lease
 
 
 --
--- Name: instrumental_lease instrumental_lease_instrumental_price_scheme_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.instrumental_lease
-    ADD CONSTRAINT instrumental_lease_instrumental_price_scheme_id_fkey FOREIGN KEY (instrumental_price_scheme_id) REFERENCES public.instrumental_price_scheme(id) NOT VALID;
-
-
---
 -- Name: instrumental_lease instrumental_storage_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.instrumental_lease
     ADD CONSTRAINT instrumental_storage_id FOREIGN KEY (instrumental_storage_id) REFERENCES public.instrumental_storage(id) NOT VALID;
+
+
+--
+-- Name: instrumental_storage instrumental_storage_instrumental_price_scheme_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.instrumental_storage
+    ADD CONSTRAINT instrumental_storage_instrumental_price_scheme_id_fkey FOREIGN KEY (instrumental_price_scheme_id) REFERENCES public.instrumental_price_scheme(id) NOT VALID;
 
 
 --

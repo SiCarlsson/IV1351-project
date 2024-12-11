@@ -3,7 +3,7 @@ package se.elhbsc.iv1351.view;
 import java.util.Scanner;
 
 import se.elhbsc.iv1351.controller.Controller;
-import se.elhbsc.iv1351.integration.ExternalDatabaseSystemDAO;
+import se.elhbsc.iv1351.model.InstrumentDTO;
 
 public class View {
 	private Scanner inputScanner;
@@ -19,11 +19,23 @@ public class View {
 		this.contr = contr;
 	}
 
+	/**
+	 * Method to display menu options in correct format
+	 * 
+	 * @param options An array of strings where each string is an option in the meny
+	 */
 	private void displayMenuOptions(String[] options) {
 		System.out.println("Chose an alternative... (integer)\n");
 		for (int i = 0; i < options.length; i++) {
 			System.out.println((i + 1) + ". " + options[i]);
 		}
+	}
+
+	/**
+	 * Method prints message regarding error handling input in menu
+	 */
+	private void defaultMenuErrorMessage() {
+		System.out.println("No need to chose a valid integer number...\n");
 	}
 
 	/**
@@ -53,7 +65,7 @@ public class View {
 
 				default:
 					clearTerminal();
-					System.out.println("No need to chose a valid integer number...\n");
+					defaultMenuErrorMessage();
 			}
 		}
 	}
@@ -73,7 +85,7 @@ public class View {
 			int inputInteger = 0;
 			try {
 				inputInteger = Integer.parseInt(inputString);
-				
+
 				if (inputInteger == 0) {
 					clearTerminal();
 					break;
@@ -102,26 +114,89 @@ public class View {
 		clearTerminal();
 		String[] alternatives = { "List all available instuments", "Rent an instrument", "Terminate a rental",
 				"Rules of renting", "Log out\n" };
-		System.out.println("Welcome " + contr.getStudent().getName() + "\n");
-		displayMenuOptions(alternatives);
-		String input = this.inputScanner.nextLine();
+		System.out.println("Welcome " + contr.getStudent().getName() + "!\n");
 
-		switch (input) {
-			case "1":
-				break;
-			case "2":
-				break;
-			case "3":
-				break;
-			case "4":
-				break;
-			case "5":
-				contr.setStudentNull();
-				clearTerminal();
-				break;
-			default:
-				break;
+		while (contr.getStudent() != null) {
+			displayMenuOptions(alternatives);
+			String input = this.inputScanner.nextLine();
+
+			switch (input) {
+				case "1":
+					clearTerminal();
+					listAllAvailableInstruments();
+					promptEnterToContinue();
+					clearTerminal();
+					break;
+				case "2":
+					clearTerminal();
+					rentAnInstrument();
+					break;
+				case "3":
+					clearTerminal();
+					System.out.println("Option 3 selected\n");
+					break;
+				case "4":
+					clearTerminal();
+					System.out.println("Option 4 selected\n");
+					break;
+				case "5":
+					contr.setStudentNull();
+					clearTerminal();
+					break;
+				default:
+					clearTerminal();
+					defaultMenuErrorMessage();
+			}
 		}
+	}
+
+	/**
+	 * Prints all available instruments as a list for the user
+	 */
+	private void listAllAvailableInstruments() {
+		System.out.println("All available instruments:\n");
+
+		System.out.println(String.format("%-15s %-20s %-15s %-10s", "Type", "Price (SEK/month)", "Brand", "ID"));
+		System.out.println("------------------------------------------------------------");
+
+		// Print each instrument as a row in the table
+		for (InstrumentDTO instrument : contr.retrieveAllAvailableInstruments()) {
+			System.out.println(String.format(
+					"%-15s %-20s %-15s %-10d",
+					instrument.getType(),
+					instrument.getPrice(),
+					instrument.getBrand(),
+					instrument.getInstrumentId()));
+		}
+	}
+
+	private void rentAnInstrument() {
+		
+
+
+
+
+
+		// listAllAvailableInstruments();
+		// System.out.println("\nChoose an instrument by selecting a valid ID\n");
+
+		// String inputString = this.inputScanner.nextLine();
+
+		// int inputInteger = 0;
+		// try {
+		// 	inputInteger = Integer.parseInt(inputString);
+		// } catch (Exception e) {
+		// 	// TODO: handle exception
+		// }
+
+	}
+
+	/**
+	 * Prompts the user to press any key in order to continue
+	 */
+	private void promptEnterToContinue() {
+		System.out.println("\nPress ENTER key to continue...");
+		this.inputScanner.nextLine();
 	}
 
 	/**

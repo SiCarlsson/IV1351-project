@@ -5,7 +5,10 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
+import se.elhbsc.iv1351.model.InstrumentDTO;
 import se.elhbsc.iv1351.model.StudentDTO;
 
 public class ExternalDatabaseSystemDAO {
@@ -15,6 +18,7 @@ public class ExternalDatabaseSystemDAO {
 
   private Connection connection;
   private PreparedStatement findStudentWithId;
+  private PreparedStatement findAllAvailableInstruments;
 
   public ExternalDatabaseSystemDAO() {
     try {
@@ -44,18 +48,18 @@ public class ExternalDatabaseSystemDAO {
    * 
    * @throws SQLException If not possible to commit
    */
-  private void commit() throws SQLException {
-    try {
-      this.connection.commit();
-    } catch (SQLException e) {
-      throw new SQLException("Could not commit");
-    }
-  }
+  // private void commit() throws SQLException {
+  //   try {
+  //     this.connection.commit();
+  //   } catch (SQLException e) {
+  //     throw new SQLException("Could not commit");
+  //   }
+  // }
 
   public StudentDTO findStudentWithId(int studentId) {
     ResultSet resultSet = null;
     StudentDTO fetchedStudent = new StudentDTO("", 0);
-    
+
     try {
       findStudentWithId.setInt(1, studentId);
 
@@ -80,9 +84,35 @@ public class ExternalDatabaseSystemDAO {
     return fetchedStudent;
   }
 
+  /**
+   * Method fetches all available instruments in the database
+   * 
+   * @return A list of all available instrumentDTOs
+   */
+  public List<InstrumentDTO> findAllAvailableInstruments() {
+    List<InstrumentDTO> instruments = new ArrayList<>();
+    try (ResultSet resultSet = findAllAvailableInstruments.executeQuery()) {
+      while (resultSet.next()) {
+        int instrumentId = resultSet.getInt("id");
+        String instrumentBrand = resultSet.getString("instrument_brand");
+        String instrumentPrice = resultSet.getString("fee_per_month");
+        String instrumentType = resultSet.getString("type_of_instrument");
+
+        instruments.add(new InstrumentDTO(instrumentType, instrumentBrand, instrumentPrice, instrumentId));
+      }
+    } catch (SQLException e) {
+      // Log error (use your preferred logging framework, e.g., SLF4J)
+      System.err.println("Error fetching available instruments: " + e.getMessage());
+    }
+    return instruments;
+  }
+
   public void prepareStatements() throws SQLException {
     findStudentWithId = this.connection
         .prepareStatement(
             "SELECT student.id, CONCAT (person.first_name, ' ', person.last_name) AS student_name FROM student LEFT JOIN person ON person.id = person_id WHERE student.id = ?");
+
+    findAllAvailableInstruments = this.connection
+        .prepareStatement("SELECT instrumental_storage.id, type_of_instrument, instrument_brand, fee_per_month FROM instrumental_storage LEFT JOIN instrumental_price_scheme ON instrumental_price_scheme.id = instrumental_price_scheme_id LEFT JOIN instrumental_lease ON instrumental_storage.id = instrumental_storage_id WHERE student_id IS NULL ORDER BY type_of_instrument");
   }
 }
