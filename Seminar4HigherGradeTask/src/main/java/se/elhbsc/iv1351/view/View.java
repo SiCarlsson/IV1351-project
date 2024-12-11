@@ -19,6 +19,13 @@ public class View {
 		this.contr = contr;
 	}
 
+	private void displayMenuOptions(String[] options) {
+		System.out.println("Chose an alternative... (integer)\n");
+		for (int i = 0; i < options.length; i++) {
+			System.out.println((i + 1) + ". " + options[i]);
+		}
+	}
+
 	/**
 	 * Contains all logic regarding the initial menu
 	 */
@@ -27,10 +34,7 @@ public class View {
 
 		while (true) {
 			String[] defaultAlternatives = { "Log in with Student-ID", "End program\n" };
-			System.out.println("Chose an alternative... (integer)\n");
-			for (int i = 0; i < defaultAlternatives.length; i++) {
-				System.out.println((i + 1) + ". " + defaultAlternatives[i]);
-			}
+			displayMenuOptions(defaultAlternatives);
 			String input = this.inputScanner.nextLine();
 
 			switch (input) {
@@ -56,6 +60,8 @@ public class View {
 
 	/**
 	 * Holds the logic of logging in a specific student
+	 * 
+	 * @throws Exception
 	 */
 	private void logInStudent() {
 		clearTerminal();
@@ -63,38 +69,59 @@ public class View {
 		while (true) {
 			System.out.println("What is your Student-ID? Please specify... (integer)\n" + goBackString);
 			String inputString = this.inputScanner.nextLine();
-			
+
 			int inputInteger = 0;
 			try {
 				inputInteger = Integer.parseInt(inputString);
+				
+				if (inputInteger == 0) {
+					clearTerminal();
+					break;
+				}
 			} catch (Exception e) {
 				clearTerminal();
 				System.err.println("You need to give a correct input (integer > 0)\n");
 			}
 
 			if (inputInteger > 0) {
-				// VERIFY THAT ID EXISTS HERE THROUGH CONTROLLER -> DATABASE -> STUDENTDTO ->
-				// VIEW
-				loggedInMenu(inputInteger);
-				break;
-			} else if (inputInteger == 0) {
-				clearTerminal();
-				break;
+				contr.validateStudentId(inputInteger);
+				if (contr.getStudent() != null) {
+					loggedInMenu();
+				}
 			} else {
 				clearTerminal();
-				System.err.println("You must chose an integer greater than 0 (>0)\n");
+				System.err.println("You must chose an integer greater than 0 (> 0)\n");
 			}
 		}
 	}
 
 	/**
 	 * Contains all logic regarding logged in menu
-	 * 
-	 * @param studentId the id of the logged in student
 	 */
-	private void loggedInMenu(int studentId) {
+	private void loggedInMenu() {
 		clearTerminal();
-		System.out.println("Logged in as JOHNDOE. Student-ID: " + studentId);
+		String[] alternatives = { "List all available instuments", "Rent an instrument", "Terminate a rental",
+				"Rules of renting", "Log out\n" };
+		System.out.println("Welcome " + contr.getStudent().getName() + "\n");
+		displayMenuOptions(alternatives);
+		String input = this.inputScanner.nextLine();
+
+		switch (input) {
+			case "1":
+				break;
+			case "2":
+				break;
+			case "3":
+				break;
+			case "4":
+				break;
+			case "5":
+				contr.setStudentNull();
+				clearTerminal();
+				break;
+			default:
+				break;
+		}
 	}
 
 	/**

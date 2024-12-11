@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import se.elhbsc.iv1351.model.StudentDTO;
+
 public class ExternalDatabaseSystemDAO {
   private static final String URL = "jdbc:postgresql://localhost:5432/SMS";
   private static final String USER = "postgres";
@@ -50,8 +52,10 @@ public class ExternalDatabaseSystemDAO {
     }
   }
 
-  public void findStudentWithId(int studentId) {
+  public StudentDTO findStudentWithId(int studentId) {
     ResultSet resultSet = null;
+    StudentDTO fetchedStudent = new StudentDTO("", 0);
+    
     try {
       findStudentWithId.setInt(1, studentId);
 
@@ -60,9 +64,7 @@ public class ExternalDatabaseSystemDAO {
       if (resultSet.next()) {
         int id = resultSet.getInt("id");
         String studentName = resultSet.getString("student_name");
-        System.out.println("Student ID: " + id + ", Name: " + studentName);
-      } else {
-        System.out.println("No student found with ID: " + studentId);
+        fetchedStudent = new StudentDTO(studentName, id);
       }
     } catch (SQLException e) {
       e.printStackTrace();
@@ -75,6 +77,7 @@ public class ExternalDatabaseSystemDAO {
         e.printStackTrace();
       }
     }
+    return fetchedStudent;
   }
 
   public void prepareStatements() throws SQLException {
