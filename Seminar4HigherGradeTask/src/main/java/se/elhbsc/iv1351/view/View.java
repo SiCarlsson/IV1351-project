@@ -3,6 +3,7 @@ package se.elhbsc.iv1351.view;
 import java.util.Scanner;
 
 import se.elhbsc.iv1351.controller.Controller;
+import se.elhbsc.iv1351.integration.ExternalDatabaseSystemDAO;
 
 public class View {
 	private Scanner inputScanner;
@@ -62,25 +63,26 @@ public class View {
 		while (true) {
 			System.out.println("What is your Student-ID? Please specify... (integer)\n" + goBackString);
 			String inputString = this.inputScanner.nextLine();
-
+			
+			int inputInteger = 0;
 			try {
-				int inputInteger = Integer.parseInt(inputString);
-				if (inputInteger > 0) {
-					// VERIFY THAT ID EXISTS HERE THROUGH CONTROLLER -> DATABASE -> STUDENTDTO ->
-					// VIEW
-					loggedInMenu(inputInteger);
-					break;
-				} else if (inputInteger == 0) {
-					clearTerminal();
-					break;
-				} else {
-					clearTerminal();
-					System.err.println("You must chose an integer greater than 0 (>0)\n");
-				}
-
+				inputInteger = Integer.parseInt(inputString);
 			} catch (Exception e) {
 				clearTerminal();
 				System.err.println("You need to give a correct input (integer > 0)\n");
+			}
+
+			if (inputInteger > 0) {
+				// VERIFY THAT ID EXISTS HERE THROUGH CONTROLLER -> DATABASE -> STUDENTDTO ->
+				// VIEW
+				loggedInMenu(inputInteger);
+				break;
+			} else if (inputInteger == 0) {
+				clearTerminal();
+				break;
+			} else {
+				clearTerminal();
+				System.err.println("You must chose an integer greater than 0 (>0)\n");
 			}
 		}
 	}
