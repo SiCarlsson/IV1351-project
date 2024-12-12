@@ -43,10 +43,11 @@ public class View {
 
 	/**
 	 * Contains all logic regarding the initial menu
-		 * @throws Exception 
-		 
-				 */
-				public void displayMenu() throws Exception {
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	public void displayMenu() throws Exception {
 		clearTerminal();
 
 		while (true) {
@@ -77,9 +78,10 @@ public class View {
 
 	/**
 	 * Holds the logic of logging in a specific student
-		 * @throws Exception 
-				 */
-				private void logInStudent() throws Exception {
+	 * 
+	 * @throws Exception
+	 */
+	private void logInStudent() throws Exception {
 		clearTerminal();
 		String goBackString = "[Choose 0 to go back to main menu]\n";
 		while (true) {
@@ -113,11 +115,13 @@ public class View {
 
 	/**
 	 * Contains all logic regarding logged in menu
-		 * @throws Exception 
-				 */
-				private void loggedInMenu() throws Exception  {
+	 * 
+	 * @throws Exception
+	 */
+	private void loggedInMenu() throws Exception {
 		clearTerminal();
-		String[] alternatives = { "List all available instruments", "Rent an instrument", "Terminate a rental", "Log out\n" };
+		String[] alternatives = { "List all available instruments", "Rent an instrument", "Terminate a rental",
+				"Log out\n" };
 		System.out.println("Welcome " + this.contr.getStudent().getName() + "!\n");
 
 		while (contr.getStudent() != null) {
@@ -178,6 +182,12 @@ public class View {
 			List<Integer> availableInstrumentIds = retrieveAvailableInstrumentIds();
 
 			while (true) {
+				if (availableInstrumentIds.isEmpty()) {
+					System.out.println("We are sorry, there are no instruments available!");
+					promptEnterToContinue();
+					break;
+				}
+
 				System.out
 						.println("Choose an instrument you want to rent: (by ID)\n[Select 0 to go back to the logged in menu]\n");
 				listAllAvailableInstruments();
@@ -194,7 +204,7 @@ public class View {
 						this.contr.rentAnInstrument(inputInteger);
 						this.contr.getStudent().increaseActiveRentalsByOne();
 						clearTerminal();
-						System.out.println("\nRENTAL COMPLETED! Enjoy your new instrument!");
+						System.out.println("RENTAL COMPLETED! Enjoy your new instrument!");
 						promptEnterToContinue();
 						break;
 					} else {
@@ -222,7 +232,7 @@ public class View {
 		return availableInstrumentIds;
 	}
 
-	private void terminateARental() throws Exception  {
+	private void terminateARental() throws Exception {
 		List<Integer> allRentalsIds = new ArrayList<>();
 		for (InstrumentDTO rental : this.contr.collectAllActiveRentals()) {
 			allRentalsIds.add(rental.getInstrumentId());
