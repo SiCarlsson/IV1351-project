@@ -308,10 +308,6 @@ public class ExternalDatabaseSystemDAO {
 
       updatedRows = deleteActiveRental.executeUpdate();
 
-      if (updatedRows != 1) {
-        handleException(failMessage, null);
-      }
-
       commit();
     } catch (Exception e) {
       handleException(failMessage, e);
@@ -333,7 +329,19 @@ public class ExternalDatabaseSystemDAO {
 
     findAllAvailableInstruments = this.connection
         .prepareStatement(
-            "SELECT instrumental_storage.id, type_of_instrument, instrument_brand, fee_per_month, MAX(end_date) AS latest_end_date FROM instrumental_storage LEFT JOIN instrumental_price_scheme ON instrumental_price_scheme.id = instrumental_price_scheme_id LEFT JOIN instrumental_lease ON instrumental_storage.id = instrumental_storage_id GROUP BY instrumental_storage.id, type_of_instrument, instrument_brand, fee_per_month ORDER BY type_of_instrument");
+            "SELECT instrumental_storage.id, type_of_instrument, instrument_brand, fee_per_month, latest_lease.end_date\n"
+                + //
+                "FROM instrumental_storage\n" + //
+                "LEFT JOIN (\n" + //
+                "\tSELECT instrumental_storage_id, MAX(end_date) AS end_date\n" + //
+                "\tFROM public.instrumental_lease\n" + //
+                "\tGROUP BY instrumental_storage_id\n" + //
+                ") AS latest_lease ON instrumental_storage.id = latest_lease.instrumental_storage_id\n" + //
+                "LEFT JOIN instrumental_price_scheme ON instrumental_price_scheme.id = instrumental_price_scheme_id\n" + //
+                "WHERE latest_lease.end_date IS NULL OR latest_lease.end_date <= CURRENT_DATE\n" + //
+                "GROUP BY instrumental_storage.id, type_of_instrument, instrument_brand, fee_per_month, latest_lease.end_date\n"
+                + //
+                "ORDER BY type_of_instrument");
 
     findRentalLimits = this.connection.prepareStatement(
         "SELECT maximum_number_of_active_leases, maximum_number_of_months FROM instrumental_lease_rules");

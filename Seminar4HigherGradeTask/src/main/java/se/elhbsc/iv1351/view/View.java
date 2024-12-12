@@ -43,10 +43,10 @@ public class View {
 
 	/**
 	 * Contains all logic regarding the initial menu
-		 * @throws ExternalDatabaseSystemException 
-	 
-			 */
-			public void displayMenu() throws ExternalDatabaseSystemException {
+		 * @throws Exception 
+		 
+				 */
+				public void displayMenu() throws Exception {
 		clearTerminal();
 
 		while (true) {
@@ -77,9 +77,9 @@ public class View {
 
 	/**
 	 * Holds the logic of logging in a specific student
-		 * @throws ExternalDatabaseSystemException 
-			 */
-			private void logInStudent() throws ExternalDatabaseSystemException {
+		 * @throws Exception 
+				 */
+				private void logInStudent() throws Exception {
 		clearTerminal();
 		String goBackString = "[Choose 0 to go back to main menu]\n";
 		while (true) {
@@ -113,12 +113,11 @@ public class View {
 
 	/**
 	 * Contains all logic regarding logged in menu
-		 * @throws ExternalDatabaseSystemException 
-			 */
-			private void loggedInMenu() throws ExternalDatabaseSystemException  {
+		 * @throws Exception 
+				 */
+				private void loggedInMenu() throws Exception  {
 		clearTerminal();
-		String[] alternatives = { "List all available instruments", "Rent an instrument", "Terminate a rental",
-				"Rules of renting", "Log out\n" };
+		String[] alternatives = { "List all available instruments", "Rent an instrument", "Terminate a rental", "Log out\n" };
 		System.out.println("Welcome " + this.contr.getStudent().getName() + "!\n");
 
 		while (contr.getStudent() != null) {
@@ -141,10 +140,6 @@ public class View {
 					clearTerminal();
 					break;
 				case "4":
-					clearTerminal();
-					System.out.println("Option 4 selected\n");
-					break;
-				case "5":
 					contr.setStudentNull();
 					clearTerminal();
 					break;
@@ -227,7 +222,7 @@ public class View {
 		return availableInstrumentIds;
 	}
 
-	private void terminateARental() throws ExternalDatabaseSystemException  {
+	private void terminateARental() throws Exception  {
 		List<Integer> allRentalsIds = new ArrayList<>();
 		for (InstrumentDTO rental : this.contr.collectAllActiveRentals()) {
 			allRentalsIds.add(rental.getInstrumentId());
@@ -262,6 +257,7 @@ public class View {
 			} catch (Exception e) {
 				clearTerminal();
 				System.err.println("Please specify an actual integer value...\n");
+				throw new Exception(e.getMessage());
 			}
 		}
 
