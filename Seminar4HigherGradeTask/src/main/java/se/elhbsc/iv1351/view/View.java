@@ -1,5 +1,7 @@
 package se.elhbsc.iv1351.view;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import se.elhbsc.iv1351.controller.Controller;
@@ -41,10 +43,9 @@ public class View {
 
 	/**
 	 * Contains all logic regarding the initial menu
-	 * 
-	 * @throws ExternalDatabaseSystemException If the data could not be fetched
-	 */
-	public void displayMenu() throws ExternalDatabaseSystemException {
+		 * @throws ExternalDatabaseSystemException 
+			 */
+			public void displayMenu() throws ExternalDatabaseSystemException{
 		clearTerminal();
 
 		while (true) {
@@ -75,11 +76,9 @@ public class View {
 
 	/**
 	 * Holds the logic of logging in a specific student
-	 * 
-	 * @throws ExternalDatabaseSystemException If the data could not be fetched
-	 * 
-	 */
-	private void logInStudent() throws ExternalDatabaseSystemException {
+		 * @throws ExternalDatabaseSystemException 
+			 */
+			private void logInStudent() throws ExternalDatabaseSystemException  {
 		clearTerminal();
 		String goBackString = "[Choose 0 to go back to main menu]\n";
 		while (true) {
@@ -113,12 +112,11 @@ public class View {
 
 	/**
 	 * Contains all logic regarding logged in menu
-	 * 
-	 * @throws ExternalDatabaseSystemException If the data could not be fetched
-	 */
-	private void loggedInMenu() throws ExternalDatabaseSystemException {
+		 * @throws ExternalDatabaseSystemException 
+			 */
+			private void loggedInMenu() throws ExternalDatabaseSystemException  {
 		clearTerminal();
-		String[] alternatives = { "List all available instuments", "Rent an instrument", "Terminate a rental",
+		String[] alternatives = { "List all available instruments", "Rent an instrument", "Terminate a rental",
 				"Rules of renting", "Log out\n" };
 		System.out.println("Welcome " + this.contr.getStudent().getName() + "!\n");
 
@@ -179,28 +177,52 @@ public class View {
 		}
 	}
 
-	private void rentAnInstrument() {
+	private void rentAnInstrument() throws ExternalDatabaseSystemException {
 		if (contr.checkEligibleForRental()) {
-			// VALID FOR RETAL
-			System.out.println("IMPLEMENT FUNCTIONALITY HERE");
-			System.out.println("CURRENT ACTIVE LEASES: " + this.contr.getStudent().getActiveRentals());
-			String inputString = this.inputScanner.nextLine();
+			// STUDENT IS VALID FOR RETAL
+			List<Integer> availableInstrumentIds = retrieveAvailableInstrumentIds();
+
+			while (true) {
+				System.out
+						.println("Choose an instrument you want to rent: (by ID)\n[Select 0 to go back to the logged in menu]\n");
+				listAllAvailableInstruments();
+
+				System.out.println();
+				String inputString = this.inputScanner.nextLine();
+
+				try {
+					int inputInteger = Integer.parseInt(inputString);
+
+					if (inputInteger == 0) {
+						break;
+					} else if (availableInstrumentIds.contains(inputInteger)) {
+						this.contr.rentAnInstrument(inputInteger);
+						System.out.println("\nRENTAL COMPLETED! Enjoy your new instrument!");
+						promptEnterToContinue();
+						break;
+					} else {
+						System.err.println("You need to select a valid instrument ID...\n");
+					}
+
+				} catch (Exception e) {
+					clearTerminal();
+					System.err.println("Your input has to be an integer value...\n");
+				}
+			}
+
 		} else {
 			System.err.println(contr.getStudent().getName()
 					+ ", you already have the maximum amount of active rentals.\nFeel free to terminate a rental in order to rent a new instrument!");
 			promptEnterToContinue();
 		}
+	}
 
-		// listAllAvailableInstruments();
-		// System.out.println("\nChoose an instrument by selecting a valid ID\n");
-
-		// int inputInteger = 0;
-		// try {
-		// inputInteger = Integer.parseInt(inputString);
-		// } catch (Exception e) {
-		//
-		// }
-
+	private List<Integer> retrieveAvailableInstrumentIds() throws ExternalDatabaseSystemException {
+		List<Integer> availableInstrumentIds = new ArrayList<>();
+		for (InstrumentDTO instrument : contr.retrieveAllAvailableInstruments()) {
+			availableInstrumentIds.add(instrument.getInstrumentId());
+		}
+		return availableInstrumentIds;
 	}
 
 	/**

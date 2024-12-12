@@ -22,6 +22,8 @@ public class ExternalDatabaseSystemDAO {
   private PreparedStatement findAllAvailableInstruments;
   private PreparedStatement findRentalLimits;
   private PreparedStatement findActiveLeasesByStudentId;
+  private PreparedStatement findLatestRentalRulesId;
+  private PreparedStatement createNewRental;
 
   /**
    * Constructor
@@ -203,6 +205,63 @@ public class ExternalDatabaseSystemDAO {
   }
 
   /**
+   * Fetches the latest rules regarding renting from database
+   * 
+   * @return The ID of the latest rule
+   * @throws ExternalDatabaseSystemException
+   */
+  private int findLatestRentalRulesId() throws ExternalDatabaseSystemException {
+    ResultSet resultSet = null;
+    String failMessage = "Could not fetch latest rental rules.";
+
+    try {
+      resultSet = findLatestRentalRulesId.executeQuery();
+
+      if (resultSet.next()) {
+        return resultSet.getInt("id");
+      }
+    } catch (Exception e) {
+      handleException(failMessage, e);
+    } finally {
+      closeResultSet(resultSet, failMessage);
+    }
+    return 1; // Default
+  }
+
+  /**
+   * Method to insert a new rental to the database
+   * 
+   * @param studentId    Logged in student ID
+   * @param instrumentId Chosen instrument ID to rent
+   * @throws ExternalDatabaseSystemException If there occurs and SQL error
+   */
+  public void createNewRental(int studentId, int instrumentId) throws ExternalDatabaseSystemException {
+    int latestRentalRulesId = findLatestRentalRulesId();
+
+    ResultSet resultSet = null;
+    String failMessage = "Could not create a new rental.";
+    int updatedRows = 0;
+
+    try {
+      createNewRental.setInt(1, studentId);
+      createNewRental.setInt(2, instrumentId);
+      createNewRental.setInt(3, latestRentalRulesId);
+      updatedRows = createNewRental.executeUpdate();
+
+      if (updatedRows != 1) {
+        handleException(failMessage, null);
+      }
+
+      commit();
+
+    } catch (Exception e) {
+      handleException(failMessage, e);
+    } finally {
+      closeResultSet(resultSet, failMessage);
+    }
+  }
+
+  /**
    * Prepares all SQL statements, called for in the constructor
    * 
    * @throws SQLException If there is any SQL related error when preparing the
@@ -215,13 +274,21 @@ public class ExternalDatabaseSystemDAO {
 
     findAllAvailableInstruments = this.connection
         .prepareStatement(
-            "SELECT instrumental_storage.id, type_of_instrument, instrument_brand, fee_per_month FROM instrumental_storage LEFT JOIN instrumental_price_scheme ON instrumental_price_scheme.id = instrumental_price_scheme_id LEFT JOIN instrumental_lease ON instrumental_storage.id = instrumental_storage_id WHERE student_id IS NULL ORDER BY type_of_instrument");
+            "SELECT instrumental_storage.id, type_of_instrument, instrument_brand, fee_per_month FROM instrumental_storage LEFT JOIN instrumental_price_scheme ON instrumental_price_scheme.id = instrumental_price_scheme_id LEFT JOIN instrumental_lease ON instrumental_storage.id = instrumental_storage_id WHERE student_id IS NULL OR (NOW() > end_date) ORDER BY type_of_instrument");
 
     findRentalLimits = this.connection.prepareStatement(
         "SELECT maximum_number_of_active_leases, maximum_number_of_months FROM instrumental_lease_rules");
 
     findActiveLeasesByStudentId = this.connection.prepareStatement(
         "SELECT student.id, COUNT(instrumental_lease.id) AS lease_count FROM public.student LEFT JOIN public.person ON person.id = student.person_id LEFT JOIN public.instrumental_lease ON student.id = instrumental_lease.student_id AND instrumental_lease.end_date > NOW() WHERE student_id = ? GROUP BY student.id");
+
+    findLatestRentalRulesId = this.connection
+        .prepareStatement("SELECT id FROM instrumental_lease_rules ORDER BY rules_from_date DESC LIMIT 1");
+
+    createNewRental = this.connection.prepareStatement(
+        "INSERT INTO instrumental_lease (start_date, end_date, student_id, instrumental_storage_id, instrumental_lease_rules_id)\n"
+            + //
+            "VALUES (NOW(), NOW() + INTERVAL '1 year', ?, ?, ?);");
   }
 
   /**
@@ -242,7 +309,7 @@ public class ExternalDatabaseSystemDAO {
     }
 
     if (exception != null) {
-      throw new ExternalDatabaseSystemException(failMessage, exception);
+      throw new ExternalDatabaseSystemException(fullFailMessage, exception);
     } else {
       throw new ExternalDatabaseSystemException(failMessage);
     }

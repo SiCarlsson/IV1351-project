@@ -1,6 +1,5 @@
 package se.elhbsc.iv1351.controller;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import se.elhbsc.iv1351.integration.ExternalDatabaseSystemDAO;
@@ -63,6 +62,16 @@ public class Controller {
     } else {
       return false;
     }
+  }
+
+  /**
+   * Initiates a creation of a new rental
+   * 
+   * @param instrumentId Instrument ID of the chosen instrument
+   * @throws ExternalDatabaseSystemException
+   */
+  public void rentAnInstrument(int instrumentId) throws ExternalDatabaseSystemException {
+    this.dbSystem.createNewRental(this.student.getStudentId(), instrumentId);
   }
 
   /**
