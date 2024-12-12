@@ -5,6 +5,8 @@ public class InstrumentDTO {
   private String brand;
   private String price;
   private int instrumentId;
+  private String startDate;
+  private String endDate;
 
   /**
    * Constructor
@@ -19,6 +21,23 @@ public class InstrumentDTO {
     this.brand = brand;
     this.price = price;
     this.instrumentId = instrumentId;
+  }
+
+  /**
+   * Constructor
+   * 
+   * @param type         Type of instrument
+   * @param brand        Brand of instrument
+   * @param instrumentId Id of instrument
+   * @param startDate    The beginning of the rental period
+   * @param endDate      The end of the rental period
+   */
+  public InstrumentDTO(String type, String brand, int instrumentId, String startDate, String endDate) {
+    this.type = type;
+    this.brand = brand;
+    this.instrumentId = instrumentId;
+    this.startDate = startDate;
+    this.endDate = endDate;
   }
 
   /**
@@ -55,5 +74,31 @@ public class InstrumentDTO {
    */
   public int getInstrumentId() {
     return this.instrumentId;
+  }
+
+  /**
+   * Getter method for start date
+   * @return The start date if existing, else empty string
+   */
+  public String getStartDate() {
+    if (this.startDate != null) {
+      return this.startDate;
+    }
+    else {
+      return "";
+    }
+  }
+
+    /**
+   * Getter method for start date
+   * @return The start date if existing, else empty string
+   */
+  public String getEndDate() {
+    if (this.endDate != null) {
+      return this.endDate;
+    }
+    else {
+      return "";
+    }
   }
 }

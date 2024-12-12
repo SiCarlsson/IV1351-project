@@ -37,7 +37,7 @@ public class Controller {
 
     if (placeholderStudentDTO.getStudentId() > 0 && placeholderStudentDTO.getName() != "") {
       this.student = new Student(placeholderStudentDTO);
-      this.student.setActiveRentals(this.dbSystem.findActiveLeasesByStudentId(studentId));
+      this.student.setActiveRentals(this.dbSystem.findNumberOfActiveLeasesByStudentId(studentId));
     }
   }
 
@@ -72,6 +72,26 @@ public class Controller {
    */
   public void rentAnInstrument(int instrumentId) throws ExternalDatabaseSystemException {
     this.dbSystem.createNewRental(this.student.getStudentId(), instrumentId);
+  }
+
+  /**
+   * Fetches and returns the active rentals of the logged in student
+   * 
+   * @return All active rentals
+   * @throws ExternalDatabaseSystemException If the data could not be fetched
+   */
+  public List<InstrumentDTO> collectAllActiveRentals() throws ExternalDatabaseSystemException {
+    return this.dbSystem.findAllActiveLeasesWithStudentId(this.student.getStudentId());
+  }
+
+  /**
+   * Method to coordinate a deletion of a rental agreement
+   * 
+   * @param instrumentId The rental agreement that should be removed
+   * @throws ExternalDatabaseSystemException If an SQL error occurs
+   */
+  public void terminateRentalAgreement(int instrumentId) throws ExternalDatabaseSystemException {
+    this.dbSystem.deleteActiveRental(instrumentId);
   }
 
   /**

@@ -64,4 +64,18 @@ public class Student {
   public void setActiveRentals(int activeRentals) {
     this.activeRentals = activeRentals;
   }
+
+    /**
+   * Method to increase total number of active rentals
+   */
+  public void increaseActiveRentalsByOne() {
+    this.activeRentals++;
+  }
+
+  /**
+   * Method to decrease total number of active rentals
+   */
+  public void decreaseActiveRentalByOne() {
+    this.activeRentals--;
+  }
 }

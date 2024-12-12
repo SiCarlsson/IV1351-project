@@ -21,9 +21,11 @@ public class ExternalDatabaseSystemDAO {
   private PreparedStatement findStudentWithId;
   private PreparedStatement findAllAvailableInstruments;
   private PreparedStatement findRentalLimits;
-  private PreparedStatement findActiveLeasesByStudentId;
+  private PreparedStatement findNumberOfActiveLeasesByStudentId;
   private PreparedStatement findLatestRentalRulesId;
   private PreparedStatement createNewRental;
+  private PreparedStatement findAllActiveLeasesWithStudentId;
+  private PreparedStatement deleteActiveRental;
 
   /**
    * Constructor
@@ -185,13 +187,13 @@ public class ExternalDatabaseSystemDAO {
    * @return the number of active current leases
    * @throws ExternalDatabaseSystemException If there is any SQL related issues
    */
-  public int findActiveLeasesByStudentId(int studentId) throws ExternalDatabaseSystemException {
+  public int findNumberOfActiveLeasesByStudentId(int studentId) throws ExternalDatabaseSystemException {
     ResultSet resultSet = null;
     String failMessage = "Could not fetch all active leases.";
 
     try {
-      findActiveLeasesByStudentId.setInt(1, studentId);
-      resultSet = findActiveLeasesByStudentId.executeQuery();
+      findNumberOfActiveLeasesByStudentId.setInt(1, studentId);
+      resultSet = findNumberOfActiveLeasesByStudentId.executeQuery();
 
       if (resultSet.next()) {
         return resultSet.getInt("lease_count");
@@ -262,6 +264,63 @@ public class ExternalDatabaseSystemDAO {
   }
 
   /**
+   * Method to fetch all active leases and necessary information
+   * 
+   * @param studentId currently logged in user id
+   * @return list of all active rentals
+   * @throws ExternalDatabaseSystemException If an error occured while fetching
+   *                                         the data
+   */
+  public List<InstrumentDTO> findAllActiveLeasesWithStudentId(int studentId) throws ExternalDatabaseSystemException {
+    List<InstrumentDTO> activeLeases = new ArrayList<>();
+    ResultSet resultSet = null;
+    String failMessage = "Could not fetch students instrumental leases.";
+
+    try {
+      findAllActiveLeasesWithStudentId.setInt(1, studentId);
+      resultSet = findAllActiveLeasesWithStudentId.executeQuery();
+
+      while (resultSet.next()) {
+        int instrumentId = resultSet.getInt("id");
+        String instrumentBrand = resultSet.getString("instrument_brand");
+        String instrumentType = resultSet.getString("type_of_instrument");
+        String startDate = resultSet.getString("start_date");
+        String endDate = resultSet.getString("end_date");
+
+        activeLeases.add(new InstrumentDTO(instrumentType, instrumentBrand, instrumentId, startDate, endDate));
+      }
+
+      return activeLeases;
+    } catch (Exception e) {
+      handleException(failMessage, e);
+    } finally {
+      closeResultSet(resultSet, failMessage);
+    }
+    return activeLeases; // Default empty
+  }
+
+  public void deleteActiveRental(int instrumentId) throws ExternalDatabaseSystemException {
+    String failMessage = "Could not terminate rental agreement.";
+    int updatedRows = 0;
+
+    try {
+      deleteActiveRental.setInt(1, instrumentId);
+
+      updatedRows = deleteActiveRental.executeUpdate();
+
+      if (updatedRows != 1) {
+        handleException(failMessage, null);
+      }
+
+      commit();
+    } catch (Exception e) {
+      handleException(failMessage, e);
+    } finally {
+      closeResultSet(null, failMessage);
+    }
+  }
+
+  /**
    * Prepares all SQL statements, called for in the constructor
    * 
    * @throws SQLException If there is any SQL related error when preparing the
@@ -274,12 +333,12 @@ public class ExternalDatabaseSystemDAO {
 
     findAllAvailableInstruments = this.connection
         .prepareStatement(
-            "SELECT instrumental_storage.id, type_of_instrument, instrument_brand, fee_per_month FROM instrumental_storage LEFT JOIN instrumental_price_scheme ON instrumental_price_scheme.id = instrumental_price_scheme_id LEFT JOIN instrumental_lease ON instrumental_storage.id = instrumental_storage_id WHERE student_id IS NULL OR (NOW() > end_date) ORDER BY type_of_instrument");
+            "SELECT instrumental_storage.id, type_of_instrument, instrument_brand, fee_per_month, MAX(end_date) AS latest_end_date FROM instrumental_storage LEFT JOIN instrumental_price_scheme ON instrumental_price_scheme.id = instrumental_price_scheme_id LEFT JOIN instrumental_lease ON instrumental_storage.id = instrumental_storage_id GROUP BY instrumental_storage.id, type_of_instrument, instrument_brand, fee_per_month ORDER BY type_of_instrument");
 
     findRentalLimits = this.connection.prepareStatement(
         "SELECT maximum_number_of_active_leases, maximum_number_of_months FROM instrumental_lease_rules");
 
-    findActiveLeasesByStudentId = this.connection.prepareStatement(
+    findNumberOfActiveLeasesByStudentId = this.connection.prepareStatement(
         "SELECT student.id, COUNT(instrumental_lease.id) AS lease_count FROM public.student LEFT JOIN public.person ON person.id = student.person_id LEFT JOIN public.instrumental_lease ON student.id = instrumental_lease.student_id AND instrumental_lease.end_date > NOW() WHERE student_id = ? GROUP BY student.id");
 
     findLatestRentalRulesId = this.connection
@@ -289,6 +348,13 @@ public class ExternalDatabaseSystemDAO {
         "INSERT INTO instrumental_lease (start_date, end_date, student_id, instrumental_storage_id, instrumental_lease_rules_id)\n"
             + //
             "VALUES (NOW(), NOW() + INTERVAL '1 year', ?, ?, ?);");
+
+    findAllActiveLeasesWithStudentId = this.connection
+        .prepareStatement(
+            "SELECT instrumental_storage.id, start_date, end_date, instrument_brand, type_of_instrument FROM instrumental_lease LEFT JOIN instrumental_storage ON instrumental_storage.id = instrumental_storage_id WHERE student_id = ? AND (NOW() < end_date)");
+
+    deleteActiveRental = this.connection
+        .prepareStatement("UPDATE instrumental_lease SET end_date = NOW() WHERE instrumental_storage_id = ?");
   }
 
   /**

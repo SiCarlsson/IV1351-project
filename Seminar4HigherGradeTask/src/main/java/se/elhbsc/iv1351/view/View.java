@@ -44,8 +44,9 @@ public class View {
 	/**
 	 * Contains all logic regarding the initial menu
 		 * @throws ExternalDatabaseSystemException 
+	 
 			 */
-			public void displayMenu() throws ExternalDatabaseSystemException{
+			public void displayMenu() throws ExternalDatabaseSystemException {
 		clearTerminal();
 
 		while (true) {
@@ -78,7 +79,7 @@ public class View {
 	 * Holds the logic of logging in a specific student
 		 * @throws ExternalDatabaseSystemException 
 			 */
-			private void logInStudent() throws ExternalDatabaseSystemException  {
+			private void logInStudent() throws ExternalDatabaseSystemException {
 		clearTerminal();
 		String goBackString = "[Choose 0 to go back to main menu]\n";
 		while (true) {
@@ -136,8 +137,8 @@ public class View {
 					clearTerminal();
 					break;
 				case "3":
+					terminateARental();
 					clearTerminal();
-					System.out.println("Option 3 selected\n");
 					break;
 				case "4":
 					clearTerminal();
@@ -179,7 +180,6 @@ public class View {
 
 	private void rentAnInstrument() throws ExternalDatabaseSystemException {
 		if (contr.checkEligibleForRental()) {
-			// STUDENT IS VALID FOR RETAL
 			List<Integer> availableInstrumentIds = retrieveAvailableInstrumentIds();
 
 			while (true) {
@@ -197,6 +197,8 @@ public class View {
 						break;
 					} else if (availableInstrumentIds.contains(inputInteger)) {
 						this.contr.rentAnInstrument(inputInteger);
+						this.contr.getStudent().increaseActiveRentalsByOne();
+						clearTerminal();
 						System.out.println("\nRENTAL COMPLETED! Enjoy your new instrument!");
 						promptEnterToContinue();
 						break;
@@ -223,6 +225,64 @@ public class View {
 			availableInstrumentIds.add(instrument.getInstrumentId());
 		}
 		return availableInstrumentIds;
+	}
+
+	private void terminateARental() throws ExternalDatabaseSystemException  {
+		List<Integer> allRentalsIds = new ArrayList<>();
+		for (InstrumentDTO rental : this.contr.collectAllActiveRentals()) {
+			allRentalsIds.add(rental.getInstrumentId());
+		}
+
+		while (true) {
+			if (allRentalsIds.isEmpty()) {
+				System.out.println("You do not have any rentals to terminate!");
+				promptEnterToContinue();
+				break;
+			}
+
+			listAllActiveLeases();
+
+			String inputString = this.inputScanner.nextLine();
+			try {
+				int inputInteger = Integer.parseInt(inputString);
+
+				if (inputInteger == 0) {
+					break;
+				} else if (allRentalsIds.contains(inputInteger)) {
+					this.contr.terminateRentalAgreement(inputInteger);
+					this.contr.getStudent().decreaseActiveRentalByOne();
+					clearTerminal();
+					System.out.println("TERMINATION COMPLETED! Remeber to bring back your instrument as soon as possible!");
+					promptEnterToContinue();
+					break;
+				} else {
+					clearTerminal();
+					System.err.println("You need to choose a valid integer ID...\n");
+				}
+			} catch (Exception e) {
+				clearTerminal();
+				System.err.println("Please specify an actual integer value...\n");
+			}
+		}
+
+	}
+
+	private void listAllActiveLeases() throws ExternalDatabaseSystemException {
+		System.out
+				.println("Which rental do you wish to terminate? Select an ID:\n[Select 0 to go back to the logged in menu]\n");
+
+		System.out.printf("%-15s %-20s %-15s %-15s %-10s%n", "Type", "Brand", "Start date", "End date", "ID");
+		System.out.println("---------------------------------------------------------------------------");
+
+		for (InstrumentDTO rental : this.contr.collectAllActiveRentals()) {
+			System.out.printf(
+					"%-15s %-20s %-15s %-15s %-10d%n",
+					rental.getType(),
+					rental.getBrand(),
+					rental.getStartDate(),
+					rental.getEndDate(),
+					rental.getInstrumentId());
+		}
 	}
 
 	/**
