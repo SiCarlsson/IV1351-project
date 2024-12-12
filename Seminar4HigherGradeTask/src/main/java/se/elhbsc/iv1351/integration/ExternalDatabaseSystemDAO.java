@@ -25,13 +25,16 @@ public class ExternalDatabaseSystemDAO {
 
   /**
    * Constructor
+   * 
+   * @throws ExternalDatabaseSystemException If an error occured while connecting
+   *                                         to the database
    */
-  public ExternalDatabaseSystemDAO() {
+  public ExternalDatabaseSystemDAO() throws ExternalDatabaseSystemException {
     try {
       createDatabaseConnection();
       prepareStatements();
     } catch (ClassNotFoundException | SQLException e) {
-      e.printStackTrace();
+      throw new ExternalDatabaseSystemException("Could not connect to database", e);
     }
   }
 
@@ -50,6 +53,7 @@ public class ExternalDatabaseSystemDAO {
 
     try {
       this.connection = DriverManager.getConnection(URL, USER, PASSWORD);
+      this.connection.setAutoCommit(false);
     } catch (SQLException e) {
       throw new SQLException("Connection could not be established to PostgreSQL");
     }
@@ -58,13 +62,32 @@ public class ExternalDatabaseSystemDAO {
   /**
    * Method to commit the database
    * 
-   * @throws SQLException If not possible to commit / problem with SQL
+   * @throws ExternalDatabaseSystemException If not possible to commit / problem
+   *                                         with SQL
    */
-  private void commit() throws SQLException {
+  private void commit() throws ExternalDatabaseSystemException {
+    String failMessage = "Could not commit to the database.";
     try {
       this.connection.commit();
     } catch (SQLException e) {
-      throw new SQLException("Could not commit");
+      handleException(failMessage, e);
+    }
+  }
+
+  /**
+   * Helper function to close the result set after fetching data
+   * 
+   * @param resultSet The currently used result set
+   * @throws ExternalDatabaseSystemException If an error occured while closing the
+   *                                         result set
+   */
+  private void closeResultSet(ResultSet resultSet, String failMessage) throws ExternalDatabaseSystemException {
+    try {
+      if (resultSet != null) {
+        resultSet.close();
+      }
+    } catch (Exception e) {
+      throw new ExternalDatabaseSystemException(failMessage, e);
     }
   }
 
@@ -73,10 +96,12 @@ public class ExternalDatabaseSystemDAO {
    * 
    * @param studentId the Id given by the user to log in
    * @return A studentDTO of the applicable user
+   * @throws ExternalDatabaseSystemException If the database had any issues
    */
-  public StudentDTO findStudentWithId(int studentId) {
+  public StudentDTO findStudentWithId(int studentId) throws ExternalDatabaseSystemException {
     ResultSet resultSet = null;
     StudentDTO fetchedStudent = new StudentDTO("", 0);
+    String failMessage = "Could not fetch student with id.";
 
     try {
       findStudentWithId.setInt(1, studentId);
@@ -89,15 +114,9 @@ public class ExternalDatabaseSystemDAO {
         fetchedStudent = new StudentDTO(studentName, id);
       }
     } catch (SQLException e) {
-      e.printStackTrace();
+      handleException(failMessage, e);
     } finally {
-      try {
-        if (resultSet != null) {
-          resultSet.close();
-        }
-      } catch (SQLException e) {
-        e.printStackTrace();
-      }
+      closeResultSet(resultSet, failMessage);
     }
     return fetchedStudent;
   }
@@ -106,10 +125,15 @@ public class ExternalDatabaseSystemDAO {
    * Method fetches all available instruments in the database
    * 
    * @return A list of all available instrumentDTOs
+   * @throws ExternalDatabaseSystemException If there is any SQL related issues
    */
-  public List<InstrumentDTO> findAllAvailableInstruments() {
+  public List<InstrumentDTO> findAllAvailableInstruments() throws ExternalDatabaseSystemException {
+    ResultSet resultSet = null;
     List<InstrumentDTO> instruments = new ArrayList<>();
-    try (ResultSet resultSet = findAllAvailableInstruments.executeQuery()) {
+    String failMessage = "Error fetching available instruments.";
+
+    try {
+      resultSet = findAllAvailableInstruments.executeQuery();
       while (resultSet.next()) {
         int instrumentId = resultSet.getInt("id");
         String instrumentBrand = resultSet.getString("instrument_brand");
@@ -119,7 +143,9 @@ public class ExternalDatabaseSystemDAO {
         instruments.add(new InstrumentDTO(instrumentType, instrumentBrand, instrumentPrice, instrumentId));
       }
     } catch (SQLException e) {
-      System.err.println("Error fetching available instruments: " + e.getMessage());
+      handleException(failMessage, e);
+    } finally {
+      closeResultSet(resultSet, failMessage);
     }
     return instruments;
   }
@@ -128,9 +154,11 @@ public class ExternalDatabaseSystemDAO {
    * Method fetches the rental limits from the database
    * 
    * @return a rental DTO with the limits
+   * @throws ExternalDatabaseSystemException If there is any SQL related issues
    */
-  public RentalDTO findRentalLimits() {
+  public RentalDTO findRentalLimits() throws ExternalDatabaseSystemException {
     ResultSet resultSet = null;
+    String failMessage = "Could not fetch rental limits.";
 
     try {
       resultSet = findRentalLimits.executeQuery();
@@ -140,7 +168,9 @@ public class ExternalDatabaseSystemDAO {
         return new RentalDTO(maximumActiveLeases, maximumRentalMonths);
       }
     } catch (SQLException e) {
-      System.err.println("Could not fetch rental limits: " + e.getMessage());
+      handleException(failMessage, e);
+    } finally {
+      closeResultSet(resultSet, failMessage);
     }
 
     return null;
@@ -151,9 +181,11 @@ public class ExternalDatabaseSystemDAO {
    * 
    * @param studentId the student id of the logged in student
    * @return the number of active current leases
+   * @throws ExternalDatabaseSystemException If there is any SQL related issues
    */
-  public int findActiveLeasesByStudentId(int studentId) {
+  public int findActiveLeasesByStudentId(int studentId) throws ExternalDatabaseSystemException {
     ResultSet resultSet = null;
+    String failMessage = "Could not fetch all active leases.";
 
     try {
       findActiveLeasesByStudentId.setInt(1, studentId);
@@ -163,14 +195,18 @@ public class ExternalDatabaseSystemDAO {
         return resultSet.getInt("lease_count");
       }
     } catch (Exception e) {
-      System.err.println("Could not fetch all active leases: " + e.getMessage());
+      handleException(failMessage, e);
+    } finally {
+      closeResultSet(resultSet, failMessage);
     }
     return 0;
   }
 
   /**
+   * Prepares all SQL statements, called for in the constructor
    * 
-   * @throws SQLException
+   * @throws SQLException If there is any SQL related error when preparing the
+   *                      queries
    */
   private void prepareStatements() throws SQLException {
     findStudentWithId = this.connection
@@ -186,5 +222,29 @@ public class ExternalDatabaseSystemDAO {
 
     findActiveLeasesByStudentId = this.connection.prepareStatement(
         "SELECT student.id, COUNT(instrumental_lease.id) AS lease_count FROM public.student LEFT JOIN public.person ON person.id = student.person_id LEFT JOIN public.instrumental_lease ON student.id = instrumental_lease.student_id AND instrumental_lease.end_date > NOW() WHERE student_id = ? GROUP BY student.id");
+  }
+
+  /**
+   * Handles exceptions (inspiration gathered from jdbc-bank github page [Leif
+   * Lindbäck])
+   * 
+   * @param failMessage The thrown error message
+   * @param exception   The thrown error
+   * @throws ExternalDatabaseSystemException Custom made exception
+   */
+  private void handleException(String failMessage, Exception exception) throws ExternalDatabaseSystemException {
+    String fullFailMessage = failMessage;
+
+    try {
+      this.connection.rollback();
+    } catch (SQLException e) {
+      fullFailMessage += ". Also failed to complete rollback due to: " + e.getMessage();
+    }
+
+    if (exception != null) {
+      throw new ExternalDatabaseSystemException(failMessage, exception);
+    } else {
+      throw new ExternalDatabaseSystemException(failMessage);
+    }
   }
 }

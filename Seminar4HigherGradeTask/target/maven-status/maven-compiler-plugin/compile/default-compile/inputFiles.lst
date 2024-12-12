@@ -1,5 +1,6 @@
 /Users/scarlsson/Library/Mobile Documents/com~apple~CloudDocs/Kungliga Tekniska Högskolan/Datalagring IV1351 HT24/IV1351-project/Seminar4HigherGradeTask/src/main/java/se/elhbsc/iv1351/controller/Controller.java
 /Users/scarlsson/Library/Mobile Documents/com~apple~CloudDocs/Kungliga Tekniska Högskolan/Datalagring IV1351 HT24/IV1351-project/Seminar4HigherGradeTask/src/main/java/se/elhbsc/iv1351/integration/ExternalDatabaseSystemDAO.java
+/Users/scarlsson/Library/Mobile Documents/com~apple~CloudDocs/Kungliga Tekniska Högskolan/Datalagring IV1351 HT24/IV1351-project/Seminar4HigherGradeTask/src/main/java/se/elhbsc/iv1351/integration/ExternalDatabaseSystemException.java
 /Users/scarlsson/Library/Mobile Documents/com~apple~CloudDocs/Kungliga Tekniska Högskolan/Datalagring IV1351 HT24/IV1351-project/Seminar4HigherGradeTask/src/main/java/se/elhbsc/iv1351/model/Instrument.java
 /Users/scarlsson/Library/Mobile Documents/com~apple~CloudDocs/Kungliga Tekniska Högskolan/Datalagring IV1351 HT24/IV1351-project/Seminar4HigherGradeTask/src/main/java/se/elhbsc/iv1351/model/InstrumentDTO.java
 /Users/scarlsson/Library/Mobile Documents/com~apple~CloudDocs/Kungliga Tekniska Högskolan/Datalagring IV1351 HT24/IV1351-project/Seminar4HigherGradeTask/src/main/java/se/elhbsc/iv1351/model/Rental.java

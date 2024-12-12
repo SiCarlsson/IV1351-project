@@ -3,6 +3,7 @@ package se.elhbsc.iv1351.view;
 import java.util.Scanner;
 
 import se.elhbsc.iv1351.controller.Controller;
+import se.elhbsc.iv1351.integration.ExternalDatabaseSystemException;
 import se.elhbsc.iv1351.model.InstrumentDTO;
 
 public class View {
@@ -40,8 +41,10 @@ public class View {
 
 	/**
 	 * Contains all logic regarding the initial menu
+	 * 
+	 * @throws ExternalDatabaseSystemException If the data could not be fetched
 	 */
-	public void displayMenu() {
+	public void displayMenu() throws ExternalDatabaseSystemException {
 		clearTerminal();
 
 		while (true) {
@@ -73,8 +76,10 @@ public class View {
 	/**
 	 * Holds the logic of logging in a specific student
 	 * 
+	 * @throws ExternalDatabaseSystemException If the data could not be fetched
+	 * 
 	 */
-	private void logInStudent() {
+	private void logInStudent() throws ExternalDatabaseSystemException {
 		clearTerminal();
 		String goBackString = "[Choose 0 to go back to main menu]\n";
 		while (true) {
@@ -108,12 +113,14 @@ public class View {
 
 	/**
 	 * Contains all logic regarding logged in menu
+	 * 
+	 * @throws ExternalDatabaseSystemException If the data could not be fetched
 	 */
-	private void loggedInMenu() {
+	private void loggedInMenu() throws ExternalDatabaseSystemException {
 		clearTerminal();
 		String[] alternatives = { "List all available instuments", "Rent an instrument", "Terminate a rental",
 				"Rules of renting", "Log out\n" };
-		System.out.println("Welcome " + contr.getStudent().getName() + "!\n");
+		System.out.println("Welcome " + this.contr.getStudent().getName() + "!\n");
 
 		while (contr.getStudent() != null) {
 			displayMenuOptions(alternatives);
@@ -152,8 +159,10 @@ public class View {
 
 	/**
 	 * Prints all available instruments as a list for the user
+	 * 
+	 * @throws ExternalDatabaseSystemException If the data could not be fetched
 	 */
-	private void listAllAvailableInstruments() {
+	private void listAllAvailableInstruments() throws ExternalDatabaseSystemException {
 		System.out.println("All available instruments:\n");
 
 		System.out.println(String.format("%-15s %-20s %-15s %-10s", "Type", "Price (SEK/month)", "Brand", "ID"));
